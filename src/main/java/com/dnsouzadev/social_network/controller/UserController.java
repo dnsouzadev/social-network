@@ -19,14 +19,13 @@ public class UserController {
     private UserService service;
 
     @PostMapping("/signup")
-    public ResponseEntity<User> signup(@RequestBody UserCadastroDto user) {
-        service.signup(user);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Void> signup(@RequestBody UserCadastroDto user) {
+        return service.signup(user);
     }
 
-    @GetMapping("/findAll")
-    public ResponseEntity<List<UserResponseDto>> findAll() {
-        return ResponseEntity.ok(service.findAll());
+    @GetMapping("/findPublic")
+    public ResponseEntity<List<UserResponseDto>> findAllPublicUsers() {
+        return service.findAllPublicUsers();
     }
 
 }

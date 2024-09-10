@@ -6,9 +6,7 @@ import lombok.*;
 @Table(name = "account")
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class User {
 
@@ -21,5 +19,12 @@ public class User {
     private TYPE_ACOOUNT typeAccount;
 
     public User(String username, String password, String typeAccount) {
+        this.username = username;
+        this.password = password;
+        this.typeAccount = TYPE_ACOOUNT.valueOf(typeAccount);
+    }
+
+    public void changeTypeAccount(TYPE_ACOOUNT typeAccount) {
+        this.typeAccount = typeAccount;
     }
 }

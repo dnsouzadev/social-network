@@ -18,10 +18,10 @@ public class User {
     @Enumerated(EnumType.STRING)
     private TYPE_ACOOUNT typeAccount;
 
-    public User(String username, String password, String typeAccount) {
+    public User(String username, String password) {
         this.username = username;
         this.password = password;
-        this.typeAccount = TYPE_ACOOUNT.valueOf(typeAccount);
+        this.typeAccount = TYPE_ACOOUNT.valueOf("PUBLIC");
     }
 
     public void changeTypeAccount(TYPE_ACOOUNT typeAccount) {

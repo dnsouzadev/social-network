@@ -3,6 +3,7 @@ package com.dnsouzadev.social_network.controller;
 import com.dnsouzadev.social_network.dto.UserDetailsDto;
 import com.dnsouzadev.social_network.dto.UserResponseDto;
 import com.dnsouzadev.social_network.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ public class UserController {
     private UserService service;
 
     @PostMapping("/signup")
-    public ResponseEntity<Void> signup(@RequestBody UserDetailsDto user) {
+    public ResponseEntity<Void> signup(@RequestBody @Valid UserDetailsDto user) {
         service.signup(user);
         return ResponseEntity.ok().build();
     }

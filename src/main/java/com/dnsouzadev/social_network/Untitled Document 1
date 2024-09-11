@@ -1,0 +1,22 @@
+MODEL USER:
+
+- id
+- username
+- password
+- visibility ENUM HIDDEN or PUBLIC
+
+PUBLIC: CAN RECEIVE FRIENDSHIP REQUESTS - DEFAULT
+HIDDEN: CANNOT RECEIVE
+
+########################## 
+CONTROLLER ROUTES:
+
+/sigunp - SIGN UP USER  - v
+/login - LOGIN USER 
+/list-friends - LIST ALL FRIENDS
+/list-users - RECEIVE ALL PUBLIC USERS -v
+/requests - ACCEPT OR DECLINE REQUEST FRIENDSHIP
+/send-request - SEND FRIEND REQUEST
+/requests/{id_request}/APPROVE - APPROVE REQUEST
+/requests/{id_request}/DECLINE - DECLINE REQUEST
+

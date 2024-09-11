@@ -2,6 +2,8 @@ package com.dnsouzadev.social_network.service;
 
 import com.dnsouzadev.social_network.dto.UserDetailsDto;
 import com.dnsouzadev.social_network.dto.UserResponseDto;
+import com.dnsouzadev.social_network.exception.CadastroException;
+import com.dnsouzadev.social_network.exception.LoginException;
 import com.dnsouzadev.social_network.model.TYPE_ACOOUNT;
 import com.dnsouzadev.social_network.model.User;
 import com.dnsouzadev.social_network.repository.UserRepository;
@@ -22,10 +24,13 @@ public class UserService {
     @Transactional
     public void signup(UserDetailsDto userDto) {
         try {
+            boolean userExists = userRepository.existsUserByUsername(userDto.username());
+            if (userExists) throw new CadastroException("User already exists");
+
             User user = new User(userDto.username(), userDto.password());
             userRepository.save(user);
         } catch (Exception e) {
-            throw new RuntimeException();
+            throw new CadastroException(e.getMessage());
         }
     }
 
@@ -36,10 +41,10 @@ public class UserService {
 
             if (user.isEmpty()) throw new RuntimeException("User not found");
 
-            if (!user.get().getPassword().equals(userDto.password())) throw new RuntimeException("Invalid password");
+            if (!user.get().getPassword().equals(userDto.password())) throw new LoginException("Invalid password");
 
         } catch (Exception e) {
-            throw new RuntimeException();
+            throw new LoginException(e.getMessage());
         }
     }
 

@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public record UserDetailsDto(
-        @NotBlank @Size(min = 8, max = 12) @Pattern(regexp = "^\\p{Alnum}{8,12}$")
+        @NotBlank @Size(min = 8, max = 10) @Pattern(regexp = "^\\p{Alnum}{8,10}$")
         String username,
         @NotBlank @Size(min = 8, max = 12) @Pattern(regexp = "^\\p{Alnum}{8,12}$")
         String password) {

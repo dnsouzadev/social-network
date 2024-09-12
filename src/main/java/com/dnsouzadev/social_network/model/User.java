@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.GenerationTime;
 
 import java.util.Date;
+import java.util.Set;
 
 @Table(name = "account")
 @Entity
@@ -28,6 +29,12 @@ public class User {
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
+
+    @OneToMany(mappedBy = "sender")
+    private Set<FriendRequest> sentFriendRequests;
+
+    @OneToMany(mappedBy = "receiver")
+    private Set<FriendRequest> receivedFriendRequests;
 
     public User(String username, String password) {
         this.username = username;

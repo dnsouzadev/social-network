@@ -13,13 +13,13 @@ HIDDEN: CANNOT RECEIVE
 CONTROLLER ROUTES:
 
 /sigunp - SIGN UP USER  - v
-/login - LOGIN USER 
+/login - LOGIN USER - v
 /list-friends - LIST ALL FRIENDS
 /list-users - RECEIVE ALL PUBLIC USERS -v
-/requests - ACCEPT OR DECLINE REQUEST FRIENDSHIP
-/send-request - SEND FRIEND REQUEST
-/requests/{id_request}/APPROVE - APPROVE REQUEST
-/requests/{id_request}/DECLINE - DECLINE REQUEST
+/requests - ACCEPT OR DECLINE REQUEST FRIENDSHIP - v
+/send-request - SEND FRIEND REQUEST - v
+/requests/{id_request}/APPROVE - APPROVE REQUEST - v
+/requests/{id_request}/DECLINE - DECLINE REQUEST - v
 
 
 Users will only have:

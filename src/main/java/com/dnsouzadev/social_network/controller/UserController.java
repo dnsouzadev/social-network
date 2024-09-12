@@ -34,4 +34,9 @@ public class UserController {
         return ResponseEntity.ok(service.findAllPublicUsers());
     }
 
+    @GetMapping("/list-friends")
+    public ResponseEntity<?> listFriends() {
+        return ResponseEntity.ok("List of friends");
+    }
+
 }

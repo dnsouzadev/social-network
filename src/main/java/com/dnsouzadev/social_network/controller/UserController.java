@@ -2,6 +2,7 @@ package com.dnsouzadev.social_network.controller;
 
 import com.dnsouzadev.social_network.dto.UserDetailsDto;
 import com.dnsouzadev.social_network.dto.UserResponseDto;
+import com.dnsouzadev.social_network.service.FriendshipService;
 import com.dnsouzadev.social_network.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,11 +33,6 @@ public class UserController {
     @GetMapping("/findPublic")
     public ResponseEntity<List<UserResponseDto>> findAllPublicUsers() {
         return ResponseEntity.ok(service.findAllPublicUsers());
-    }
-
-    @GetMapping("/list-friends")
-    public ResponseEntity<?> listFriends() {
-        return ResponseEntity.ok("List of friends");
     }
 
 }

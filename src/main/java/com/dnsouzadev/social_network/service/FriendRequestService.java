@@ -3,8 +3,10 @@ package com.dnsouzadev.social_network.service;
 import com.dnsouzadev.social_network.dto.FriendRequestResponseDto;
 import com.dnsouzadev.social_network.model.FriendRequest;
 import com.dnsouzadev.social_network.model.FriendRequestStatus;
+import com.dnsouzadev.social_network.model.Friendship;
 import com.dnsouzadev.social_network.model.User;
 import com.dnsouzadev.social_network.repository.FriendRequestRepository;
+import com.dnsouzadev.social_network.repository.FriendshipRepository;
 import com.dnsouzadev.social_network.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,9 @@ public class FriendRequestService {
 
     @Autowired
     private FriendRequestRepository friendRequestRepository;
+
+    @Autowired
+    private FriendshipRepository friendshipRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -63,6 +68,11 @@ public class FriendRequestService {
 
         friendRequest.accept();
         friendRequestRepository.save(friendRequest);
+
+        Friendship friendship = new Friendship();
+        friendship.setUser1(friendRequest.getSender());
+        friendship.setUser2(friendRequest.getReceiver());
+        friendshipRepository.save(friendship);
     }
 
     public void rejectFriendRequest(Long id) {

@@ -5,7 +5,9 @@ import lombok.*;
 import org.hibernate.annotations.GenerationTime;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 
 @Table(name = "account")
 @Entity
@@ -46,4 +48,5 @@ public class User {
     public void changeTypeAccount(TYPE_ACOOUNT typeAccount) {
         this.typeAccount = typeAccount;
     }
+
 }

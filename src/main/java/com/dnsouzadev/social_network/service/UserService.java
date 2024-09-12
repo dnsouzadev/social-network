@@ -4,6 +4,7 @@ import com.dnsouzadev.social_network.dto.UserDetailsDto;
 import com.dnsouzadev.social_network.dto.UserResponseDto;
 import com.dnsouzadev.social_network.exception.CadastroException;
 import com.dnsouzadev.social_network.exception.LoginException;
+import com.dnsouzadev.social_network.model.Friendship;
 import com.dnsouzadev.social_network.model.TYPE_ACOOUNT;
 import com.dnsouzadev.social_network.model.User;
 import com.dnsouzadev.social_network.repository.UserRepository;
@@ -82,6 +83,4 @@ public class UserService {
             throw new RuntimeException();
         }
     }
-
-
 }

@@ -29,6 +29,8 @@ public class FriendRequestService {
     public void sendFriendRequest(String senderUsername, String receiverUsername) {
         User sender = userRepository.findByUsername(senderUsername).orElseThrow(() -> new RuntimeException("Sender not found"));
         User receiver = userRepository.findByUsername(receiverUsername).orElseThrow(() -> new RuntimeException("Receiver not found"));
+        User receiverTypeAccount = userRepository.findByUsername(receiverUsername).orElseThrow(() -> new RuntimeException("Receiver not found"));
+        String typeAccountReceiver = String.valueOf(receiverTypeAccount.getTypeAccount());
 
         Optional<FriendRequest> existingRequest = friendRequestRepository
                 .findBySenderAndReceiverAndStatus(sender, receiver, FriendRequestStatus.PENDING);
@@ -38,7 +40,8 @@ public class FriendRequestService {
 
         if (existingRequest.isPresent()) throw new RuntimeException("Friend request already sent");
         if (alreadyFriends.isPresent()) throw new RuntimeException("Users are already friends");
-
+        if (sender.equals(receiver)) throw new RuntimeException("You can't send a friend request to yourself");
+        if (typeAccountReceiver.equals("HIDDEN")) throw new RuntimeException("You can't send a friend request to this user");
 
         FriendRequest friendRequest = new FriendRequest();
         friendRequest.setSender(sender);

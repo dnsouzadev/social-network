@@ -26,6 +26,9 @@ public class User {
     private String password;
 
     @Enumerated(EnumType.STRING)
+    private ROLE role;
+
+    @Enumerated(EnumType.STRING)
     private TYPE_ACOOUNT typeAccount;
 
     @Column(name = "created_at")
@@ -41,6 +44,7 @@ public class User {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+        this.role = ROLE.valueOf("USER");
         this.typeAccount = TYPE_ACOOUNT.valueOf("PUBLIC");
         this.createdAt = new Date();
     }

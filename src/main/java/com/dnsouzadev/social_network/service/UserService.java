@@ -8,7 +8,10 @@ import com.dnsouzadev.social_network.model.Friendship;
 import com.dnsouzadev.social_network.model.TYPE_ACOOUNT;
 import com.dnsouzadev.social_network.model.User;
 import com.dnsouzadev.social_network.repository.UserRepository;
+import com.dnsouzadev.social_network.security.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +24,12 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private AuthenticationManager manager;
+
+    @Autowired
+    private TokenService tokenService;
 
     @Transactional
     public void signup(UserDetailsDto userDto) {
@@ -36,14 +45,14 @@ public class UserService {
     }
 
     @Transactional
-    public void login(UserDetailsDto userDto) {
+    public String login(UserDetailsDto dto) {
         try {
-            Optional<User> user = userRepository.findByUsername(userDto.username());
+            var authenticationToken = new UsernamePasswordAuthenticationToken(dto.username(), dto.password());
+            var authentication = manager.authenticate(authenticationToken);
 
-            if (user.isEmpty()) throw new RuntimeException("User not found");
+            var tokenJWT = tokenService.generateToken((User) authentication.getPrincipal());
 
-            if (!user.get().getPassword().equals(userDto.password())) throw new LoginException("Invalid password");
-
+            return tokenJWT;
         } catch (Exception e) {
             throw new LoginException(e.getMessage());
         }

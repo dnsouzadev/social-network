@@ -26,8 +26,8 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody UserDetailsDto user) {
-        service.login(user);
-        return ResponseEntity.ok("Login successful");
+        String jwt = service.login(user);
+        return ResponseEntity.ok(jwt);
     }
 
     @GetMapping("/findPublic")

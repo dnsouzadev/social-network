@@ -75,7 +75,7 @@ public class FriendRequestService {
         Friendship friendship = new Friendship();
         friendship.setUser1(friendRequest.getSender());
         friendship.setUser2(friendRequest.getReceiver());
-        friendshipRepository.save(friendship);
+        friendshipRepository.save(friendship);;
     }
 
     public void rejectFriendRequest(Long id) {
@@ -85,7 +85,7 @@ public class FriendRequestService {
         deleteFriendRequest(id);
     }
 
-    public void deleteFriendRequest(Long id) {
+    private void deleteFriendRequest(Long id) {
         FriendRequest friendRequest = friendRequestRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Friend request not found"));
 

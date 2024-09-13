@@ -20,35 +20,34 @@ public class TokenService {
     @Value("${app.security.token.secret}")
     private String secret;
 
-    public String generateToken(User user) {
+    public String gerarToken(User usuario) {
         try {
-            var algorithm = Algorithm.HMAC256(secret);
+            Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.create()
-                    .withIssuer(ISSUER)
-                    .withSubject(user.getUsername())
-                    .withClaim("role" , user.getRole().name())
-                    .withExpiresAt(expirationDate())
+                    .withIssuer("API Voll.med")
+                    .withSubject(usuario.getUsername())
+                    .withExpiresAt(dataExpiracao())
                     .sign(algorithm);
         } catch (JWTCreationException exception) {
-            throw new RuntimeException("Erro ao gerar token jwt", exception);
+            // Invalid Signing configuration / Couldn't convert Claims.
+            throw new RuntimeException("Erro ao gerar token", exception);
         }
     }
 
-    public String getSubject(String tokenJWT) {
+    public String getSubject(String token) {
         try {
-            var algorithm = Algorithm.HMAC256(secret);
+            Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.require(algorithm)
-                    .withIssuer(ISSUER)
+                    .withIssuer("API Voll.med")
                     .build()
-                    .verify(tokenJWT)
+                    .verify(token)
                     .getSubject();
         } catch (JWTVerificationException exception) {
-            throw new RuntimeException("Token JWT inválido ou expirado: " +tokenJWT);
+            throw new RuntimeException("Token inválido ou expirado!", exception);
         }
     }
 
-    private Instant expirationDate() {
-        return LocalDateTime.now().plusHours(8).toInstant(ZoneOffset.of("-03:00"));
+    private Instant dataExpiracao() {
+        return LocalDateTime.now().plusHours(2).toInstant(java.time.ZoneOffset.of("-03:00"));
     }
-
 }

@@ -26,10 +26,8 @@ public class UserService {
     private UserRepository userRepository;
 
     @Autowired
-    private AuthenticationManager manager;
-
-    @Autowired
     private TokenService tokenService;
+
 
     @Transactional
     public void signup(UserDetailsDto userDto) {
@@ -44,18 +42,16 @@ public class UserService {
         }
     }
 
-    @Transactional
     public String login(UserDetailsDto dto) {
-        try {
-            var authenticationToken = new UsernamePasswordAuthenticationToken(dto.username(), dto.password());
-            var authentication = manager.authenticate(authenticationToken);
+        if (dto.password() == null) throw new LoginException("Senha invalida");
 
-            var tokenJWT = tokenService.generateToken((User) authentication.getPrincipal());
+        Optional<User> user = userRepository.findByUsername(dto.username());
+        if (user.isEmpty()) throw new LoginException("Usuario nao existe");
 
-            return tokenJWT;
-        } catch (Exception e) {
-            throw new LoginException(e.getMessage());
-        }
+        if (!user.get().getPassword().equals(dto.password())) throw new LoginException("Senha invalida");
+
+        User usuario = user.get();
+        return tokenService.gerarToken(usuario);
     }
 
     @Transactional(readOnly = true)

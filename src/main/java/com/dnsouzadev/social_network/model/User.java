@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.proxy.HibernateProxy;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.*;
@@ -48,6 +49,14 @@ public class User implements UserDetails {
         this.createdAt = new Date();
     }
 
+    public User(String username, String password, ROLE role) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+        this.typeAccount = TYPE_ACOOUNT.valueOf("PUBLIC");
+        this.createdAt = new Date();
+    }
+
     public void changeTypeAccount(TYPE_ACOOUNT typeAccount) {
         this.typeAccount = typeAccount;
     }
@@ -70,7 +79,8 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        if(this.role == ROLE.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
     @Override
@@ -83,23 +93,5 @@ public class User implements UserDetails {
         return username;
     }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
 }
+

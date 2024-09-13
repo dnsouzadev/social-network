@@ -51,7 +51,7 @@ public class UserService {
         if (!user.get().getPassword().equals(dto.password())) throw new LoginException("Senha invalida");
 
         User usuario = user.get();
-        return tokenService.gerarToken(usuario);
+        return tokenService.generateToken(usuario);
     }
 
     @Transactional(readOnly = true)

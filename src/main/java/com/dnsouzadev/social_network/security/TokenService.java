@@ -20,34 +20,35 @@ public class TokenService {
     @Value("${app.security.token.secret}")
     private String secret;
 
-    public String gerarToken(User usuario) {
+    public String generateToken(User user) {
         try {
-            Algorithm algorithm = Algorithm.HMAC256(secret);
+            var algorithm = Algorithm.HMAC256(secret);
             return JWT.create()
-                    .withIssuer("API Voll.med")
-                    .withSubject(usuario.getUsername())
+                    .withIssuer(ISSUER)
+                    .withSubject(user.getUsername())
+                    .withClaim("role", user.getRole().name())
                     .withExpiresAt(dataExpiracao())
                     .sign(algorithm);
         } catch (JWTCreationException exception) {
-            // Invalid Signing configuration / Couldn't convert Claims.
-            throw new RuntimeException("Erro ao gerar token", exception);
+            throw new RuntimeException("Erro ao gerar token jwt", exception);
         }
     }
 
-    public String getSubject(String token) {
+    public String getSubject(String tokenJWT) {
         try {
-            Algorithm algorithm = Algorithm.HMAC256(secret);
+            var algorithm = Algorithm.HMAC256(secret);
             return JWT.require(algorithm)
-                    .withIssuer("API Voll.med")
+                    .withIssuer(ISSUER)
                     .build()
-                    .verify(token)
+                    .verify(tokenJWT)
                     .getSubject();
         } catch (JWTVerificationException exception) {
-            throw new RuntimeException("Token inválido ou expirado!", exception);
+            throw new RuntimeException("Token JWT inválido ou expirado: " +tokenJWT);
         }
     }
 
     private Instant dataExpiracao() {
-        return LocalDateTime.now().plusHours(2).toInstant(java.time.ZoneOffset.of("-03:00"));
+        return LocalDateTime.now().plusHours(8).toInstant(ZoneOffset.of("-03:00"));
     }
+
 }

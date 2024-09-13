@@ -37,3 +37,5 @@ Request friendship (Ensure users requesting, accepting or declining friendships 
 Accept friendship
 Decline friendship (when a user gets 3 declines that user gets a forever alone badge)
 Get user friends
+
+INSERT INTO account (username, password, role, type_account, created_at) VALUES ('admin123', 'admin123', 'ADMIN', 'PUBLIC', CURRENT_TIMESTAMP);

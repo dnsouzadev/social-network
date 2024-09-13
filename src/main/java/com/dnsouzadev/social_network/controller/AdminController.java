@@ -1,7 +1,10 @@
 package com.dnsouzadev.social_network.controller;
 
+import com.dnsouzadev.social_network.dto.UserDetailsAdminDto;
+import com.dnsouzadev.social_network.dto.UserDetailsDto;
 import com.dnsouzadev.social_network.dto.UserResponseDto;
 import com.dnsouzadev.social_network.model.User;
+import com.dnsouzadev.social_network.service.AdminService;
 import com.dnsouzadev.social_network.service.FriendshipService;
 import com.dnsouzadev.social_network.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,19 +18,28 @@ import java.util.List;
 public class AdminController {
 
     @Autowired
-    private UserService service;
+    private UserService userService;
+
+    @Autowired
+    private AdminService adminService;
 
     @Autowired
     private FriendshipService friendshipService;
 
     @GetMapping("/findAll")
     public ResponseEntity<List<UserResponseDto>> findAll() {
-        return ResponseEntity.ok(service.findAll());
+        return ResponseEntity.ok(userService.findAll());
+    }
+
+    @PostMapping("/signup")
+    public ResponseEntity<Void> signup(@RequestBody UserDetailsAdminDto user) {
+        adminService.signup(user);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/change/{id}")
     public ResponseEntity<Void> changeType(@PathVariable Long id) {
-        service.change(id);
+        userService.change(id);
         return ResponseEntity.ok().build();
     }
 

@@ -82,9 +82,13 @@ public class FriendRequestService {
         friendshipRepository.save(friendship);;
     }
 
-    public void rejectFriendRequest(Long id) {
+    public void rejectFriendRequest(Long id, String username) {
         FriendRequest friendRequest = friendRequestRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Friend request not found"));
+
+        boolean isReceiver = friendRequest.getReceiver().getUsername().equals(username);
+
+        if (!isReceiver) throw new RuntimeException("You can't accept a friend request that you didn't receive");
 
         deleteFriendRequest(id);
     }

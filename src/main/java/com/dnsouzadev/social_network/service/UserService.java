@@ -28,6 +28,11 @@ public class UserService {
     @Autowired
     private TokenService tokenService;
 
+    @Transactional(readOnly = true)
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username).orElseThrow();
+    }
+
 
     @Transactional
     public void signup(UserDetailsDto userDto) {

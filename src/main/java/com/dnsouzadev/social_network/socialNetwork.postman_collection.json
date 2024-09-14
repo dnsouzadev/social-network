@@ -1,0 +1,383 @@
+{
+	"info": {
+		"_postman_id": "5d47850c-711d-4140-be9b-2df9d7913002",
+		"name": "socialNetwork",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20550729"
+	},
+	"item": [
+		{
+			"name": "AUTH",
+			"item": [
+				{
+					"name": "SIGNUP USER",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"login1234\",\n    \"password\": \"senha123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/signup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LOGIN",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"admin123\",\n    \"password\": \"admin123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "AUTHORIZATION"
+		},
+		{
+			"name": "USER REQUESTS",
+			"item": [
+				{
+					"name": "FIND ALL PUBLIC USERS",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJBUEkgU09DSUFMTkVUV09SSyIsInN1YiI6ImFkbWluMTIzIiwicm9sZSI6IkFETUlOIiwiZXhwIjoxNzI2MzU3NjQ4fQ.Z-nPTY06Rsrud04a5Cbi_Jr7F_WEasDNgGA5Dy13xsY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/public",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"public"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET FRIENDS",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJBUEkgU09DSUFMTkVUV09SSyIsInN1YiI6ImFkbWluMTIzIiwicm9sZSI6IkFETUlOIiwiZXhwIjoxNzI2MzU3NjQ4fQ.Z-nPTY06Rsrud04a5Cbi_Jr7F_WEasDNgGA5Dy13xsY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/friends",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"friends"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CHANGE TYPE ACCOUNT",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/change",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"change"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET REQUEST FRIENDS",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/requests",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"requests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE FRIEND REQUEST",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"receiver\": \"daniel123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/friend-requests/send",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"friend-requests",
+								"send"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ACCEPT REQUEST FRIEND",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJBUEkgU09DSUFMTkVUV09SSyIsInN1YiI6ImFkbWluMTIzIiwicm9sZSI6IkFETUlOIiwiZXhwIjoxNzI2MzU3NjQ4fQ.Z-nPTY06Rsrud04a5Cbi_Jr7F_WEasDNgGA5Dy13xsY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/accept/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"accept",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "REJEITAR FRIENDREQUEST",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/reject/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"reject",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "requests that can be make with user login"
+		},
+		{
+			"name": "ADMIN REQUESTS",
+			"item": [
+				{
+					"name": "LIST ALL USERS",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJBUEkgU09DSUFMTkVUV09SSyIsInN1YiI6ImxvZ2luMTIzNCIsInJvbGUiOiJVU0VSIiwiZXhwIjoxNzI2MjgyOTM0fQ.YY_PVM-Uox461KNGCqq65B1fRBQWbA1mEypOKV7b23Y",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admin/findAll",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"findAll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CHANGE TYPE ACCOUNT",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admin/change/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"change",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET FRIENDS",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJBUEkgVm9sbC5tZWQiLCJzdWIiOiJsb2dpbjEyMzQiLCJleHAiOjE3MjYyNjAxNDB9.21klmyqU0RJ3WrEpjIALvLmWmKCvoyFkukwWHUPtTCc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admin/listFriends/admin123",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"listFriends",
+								"admin123"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE AN ADMIN USER",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJBUEkgU09DSUFMTkVUV09SSyIsInN1YiI6ImFkbWluMTIzIiwicm9sZSI6IkFETUlOIiwiZXhwIjoxNzI2MjgzNTAyfQ.L8DeH9w92b1eLeFxFwofnl8geCBQQfqy6EfSKZrfq3A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"daniel123\",\n    \"password\": \"daniel123\",\n    \"role\": \"ADMIN\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/admin/signup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "REQUESTS THAT CAN BE MAKE BY ONLY ADMIN"
+		}
+	]
+}

@@ -67,4 +67,11 @@ public class UserController {
 
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/delete/{username}")
+    public ResponseEntity<Void> deleteFriendship(@PathVariable String username, HttpServletRequest request) {
+        String sender = getUserByJwt.getUser(request);
+        friendshipService.deleteFriendship(sender, username);
+        return ResponseEntity.ok().build();
+    }
 }

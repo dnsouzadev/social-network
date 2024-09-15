@@ -35,8 +35,23 @@ public class FriendshipService {
             }
         }
 
-
         return friends;
+    }
+
+    public void deleteFriendship(String sender, String receiver) {
+        User user1 = userRepository.findByUsername(sender)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        User user2 = userRepository.findByUsername(receiver)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        List<Friendship> friendships = friendshipRepository.findByUser1OrUser2(user1, user2);
+        for (Friendship friendship : friendships) {
+            if (friendship.getUser1().equals(user1) && friendship.getUser2().equals(user2) ||
+                    friendship.getUser1().equals(user2) && friendship.getUser2().equals(user1)) {
+                friendshipRepository.delete(friendship);
+            }
+        }
     }
 }
 

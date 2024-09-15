@@ -79,7 +79,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJBUEkgU09DSUFMTkVUV09SSyIsInN1YiI6ImFkbWluMTIzIiwicm9sZSI6IkFETUlOIiwiZXhwIjoxNzI2MzU3NjQ4fQ.Z-nPTY06Rsrud04a5Cbi_Jr7F_WEasDNgGA5Dy13xsY",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJBUEkgU09DSUFMTkVUV09SSyIsInN1YiI6ImxvZ2luMTIzNCIsInJvbGUiOiJVU0VSIiwiZXhwIjoxNzI2MzU5NjMxfQ.Etk2DmzVF7DInmSKQ1QwKCp9Lwi2CQbI21DES3HLVPg",
 									"type": "string"
 								}
 							]
@@ -108,7 +108,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJBUEkgU09DSUFMTkVUV09SSyIsInN1YiI6ImFkbWluMTIzIiwicm9sZSI6IkFETUlOIiwiZXhwIjoxNzI2MzU3NjQ4fQ.Z-nPTY06Rsrud04a5Cbi_Jr7F_WEasDNgGA5Dy13xsY",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJBUEkgU09DSUFMTkVUV09SSyIsInN1YiI6ImxvZ2luMTIzNCIsInJvbGUiOiJVU0VSIiwiZXhwIjoxNzI2MzU5NjMxfQ.Etk2DmzVF7DInmSKQ1QwKCp9Lwi2CQbI21DES3HLVPg",
 									"type": "string"
 								}
 							]
@@ -151,6 +151,16 @@
 				{
 					"name": "GET REQUEST FRIENDS",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJBUEkgU09DSUFMTkVUV09SSyIsInN1YiI6ImRhbmllbDEyMyIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcyNjM1OTkxNn0.RHWZBlXVQSDvEVDxU4Qj6P7KNPm1jGHGCmpv1v9jqFc",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -170,11 +180,21 @@
 				{
 					"name": "CREATE FRIEND REQUEST",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJBUEkgU09DSUFMTkVUV09SSyIsInN1YiI6ImxvZ2luMTIzNCIsInJvbGUiOiJVU0VSIiwiZXhwIjoxNzI2MzU5NjMxfQ.Etk2DmzVF7DInmSKQ1QwKCp9Lwi2CQbI21DES3HLVPg",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"receiver\": \"daniel123\"\n}",
+							"raw": "{\n    \"receiver\": \"admin123\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -182,7 +202,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/friend-requests/send",
+							"raw": "http://localhost:8080/api/send",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -190,7 +210,6 @@
 							"port": "8080",
 							"path": [
 								"api",
-								"friend-requests",
 								"send"
 							]
 						}
@@ -205,7 +224,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJBUEkgU09DSUFMTkVUV09SSyIsInN1YiI6ImFkbWluMTIzIiwicm9sZSI6IkFETUlOIiwiZXhwIjoxNzI2MzU3NjQ4fQ.Z-nPTY06Rsrud04a5Cbi_Jr7F_WEasDNgGA5Dy13xsY",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJBUEkgU09DSUFMTkVUV09SSyIsInN1YiI6ImRhbmllbDEyMyIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcyNjM1OTkxNn0.RHWZBlXVQSDvEVDxU4Qj6P7KNPm1jGHGCmpv1v9jqFc",
 									"type": "string"
 								}
 							]
@@ -213,7 +232,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/accept/1",
+							"raw": "http://localhost:8080/api/accept/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -222,7 +241,7 @@
 							"path": [
 								"api",
 								"accept",
-								"1"
+								"2"
 							]
 						}
 					},
@@ -263,7 +282,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJBUEkgU09DSUFMTkVUV09SSyIsInN1YiI6ImxvZ2luMTIzNCIsInJvbGUiOiJVU0VSIiwiZXhwIjoxNzI2MjgyOTM0fQ.YY_PVM-Uox461KNGCqq65B1fRBQWbA1mEypOKV7b23Y",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJBUEkgU09DSUFMTkVUV09SSyIsInN1YiI6ImFkbWluMTIzIiwicm9sZSI6IkFETUlOIiwiZXhwIjoxNzI2MzkwMDk5fQ.D6rmg2eoPBzJ4beVDpr77xD-sLp74s5J8EBjOfHFBOk",
 									"type": "string"
 								}
 							]
@@ -271,7 +290,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/admin/findAll",
+							"raw": "http://localhost:8080/admin/all",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -279,7 +298,7 @@
 							"port": "8080",
 							"path": [
 								"admin",
-								"findAll"
+								"all"
 							]
 						}
 					},
@@ -322,7 +341,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/admin/listFriends/admin123",
+							"raw": "http://localhost:8080/admin/firends/admin123",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -330,7 +349,7 @@
 							"port": "8080",
 							"path": [
 								"admin",
-								"listFriends",
+								"firends",
 								"admin123"
 							]
 						}

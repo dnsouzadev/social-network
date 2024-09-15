@@ -5,7 +5,6 @@ import com.dnsouzadev.social_network.dto.UserDetailsDto;
 import com.dnsouzadev.social_network.dto.UserResponseDto;
 import com.dnsouzadev.social_network.helper.GetUserByJwt;
 import com.dnsouzadev.social_network.model.User;
-import com.dnsouzadev.social_network.security.TokenService;
 import com.dnsouzadev.social_network.service.FriendRequestService;
 import com.dnsouzadev.social_network.service.FriendshipService;
 import com.dnsouzadev.social_network.service.UserService;
@@ -23,9 +22,6 @@ public class UserController {
 
     @Autowired
     private UserService service;
-
-    @Autowired
-    private TokenService tokenService;
 
     @Autowired
     private FriendshipService friendshipService;

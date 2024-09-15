@@ -4,14 +4,11 @@ import com.dnsouzadev.social_network.dto.UserDetailsDto;
 import com.dnsouzadev.social_network.dto.UserResponseDto;
 import com.dnsouzadev.social_network.exception.CadastroException;
 import com.dnsouzadev.social_network.exception.LoginException;
-import com.dnsouzadev.social_network.model.Friendship;
 import com.dnsouzadev.social_network.model.TYPE_ACOOUNT;
 import com.dnsouzadev.social_network.model.User;
 import com.dnsouzadev.social_network.repository.UserRepository;
 import com.dnsouzadev.social_network.security.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -63,9 +60,7 @@ public class UserService {
     public List<UserResponseDto> findAll() {
         try {
             List<User> users = userRepository.findAll();
-            return users.stream().
-                    map(user -> new UserResponseDto(user.getId(), user.getUsername(), user.getTypeAccount())).
-                    collect(Collectors.toList());
+            return users.stream().map(user -> new UserResponseDto(user.getId(), user.getUsername(), user.getTypeAccount())).collect(Collectors.toList());
         } catch (Exception e) {
             throw new RuntimeException();
         }
@@ -86,9 +81,7 @@ public class UserService {
     public List<UserResponseDto> findAllPublicUsers() {
         try {
             List<User> users = userRepository.findAllByTypeAccount(TYPE_ACOOUNT.PUBLIC);
-            return users.stream().
-                    map(user -> new UserResponseDto(user.getId(), user.getUsername(), user.getTypeAccount())).
-                    collect(Collectors.toList());
+            return users.stream().map(user -> new UserResponseDto(user.getId(), user.getUsername(), user.getTypeAccount())).collect(Collectors.toList());
         } catch (Exception e) {
             throw new RuntimeException();
         }

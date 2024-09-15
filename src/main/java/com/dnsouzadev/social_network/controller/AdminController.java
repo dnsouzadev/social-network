@@ -1,9 +1,7 @@
 package com.dnsouzadev.social_network.controller;
 
 import com.dnsouzadev.social_network.dto.UserDetailsAdminDto;
-import com.dnsouzadev.social_network.dto.UserDetailsDto;
 import com.dnsouzadev.social_network.dto.UserResponseDto;
-import com.dnsouzadev.social_network.model.User;
 import com.dnsouzadev.social_network.service.AdminService;
 import com.dnsouzadev.social_network.service.FriendshipService;
 import com.dnsouzadev.social_network.service.UserService;
@@ -26,7 +24,7 @@ public class AdminController {
     @Autowired
     private FriendshipService friendshipService;
 
-    @GetMapping("/findAll")
+    @GetMapping("/all")
     public ResponseEntity<List<UserResponseDto>> findAll() {
         return ResponseEntity.ok(userService.findAll());
     }
@@ -43,7 +41,7 @@ public class AdminController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/listFriends/{username}")
+    @GetMapping("/friends/{username}")
     public ResponseEntity<List<UserResponseDto>> listFriends(@PathVariable String username) {
         return ResponseEntity.ok(friendshipService.listFriends(username));
     }

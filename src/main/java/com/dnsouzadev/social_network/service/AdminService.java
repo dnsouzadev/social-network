@@ -1,12 +1,10 @@
 package com.dnsouzadev.social_network.service;
 
 import com.dnsouzadev.social_network.dto.UserDetailsAdminDto;
-import com.dnsouzadev.social_network.dto.UserDetailsDto;
 import com.dnsouzadev.social_network.exception.CadastroException;
 import com.dnsouzadev.social_network.model.User;
 import com.dnsouzadev.social_network.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 @Service

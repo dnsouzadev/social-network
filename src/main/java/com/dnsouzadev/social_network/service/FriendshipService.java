@@ -36,7 +36,6 @@ public class FriendshipService {
         }
 
 
-
         return friends;
     }
 }

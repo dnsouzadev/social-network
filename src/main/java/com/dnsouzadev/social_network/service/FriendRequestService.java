@@ -41,7 +41,8 @@ public class FriendRequestService {
         if (existingRequest.isPresent()) throw new RuntimeException("Friend request already sent");
         if (alreadyFriends.isPresent()) throw new RuntimeException("Users are already friends");
         if (sender.equals(receiver)) throw new RuntimeException("You can't send a friend request to yourself");
-        if (typeAccountReceiver.equals("HIDDEN")) throw new RuntimeException("You can't send a friend request to this user");
+        if (typeAccountReceiver.equals("HIDDEN"))
+            throw new RuntimeException("You can't send a friend request to this user");
 
         FriendRequest friendRequest = new FriendRequest();
         friendRequest.setSender(sender);
@@ -79,7 +80,7 @@ public class FriendRequestService {
         Friendship friendship = new Friendship();
         friendship.setUser1(friendRequest.getSender());
         friendship.setUser2(friendRequest.getReceiver());
-        friendshipRepository.save(friendship);;
+        friendshipRepository.save(friendship);
     }
 
     public void rejectFriendRequest(Long id, String username) {

@@ -18,7 +18,7 @@ public class AdminService {
             boolean userExists = userRepository.existsUserByUsername(userDto.username());
             if (userExists) throw new CadastroException("User already exists");
 
-            User user = new User(userDto.username(), userDto.password(), userDto.role());
+            User user = new User(userDto.firstName(), userDto.lastName(), userDto.username(), userDto.password(), userDto.role());
             userRepository.save(user);
 
         } catch (Exception e) {

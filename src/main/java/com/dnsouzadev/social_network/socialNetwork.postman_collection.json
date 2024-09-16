@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"username\": \"login1234\",\n    \"password\": \"senha123\"\n}",
+							"raw": "{\n    \"firstName\": \"Daniel\",\n    \"lastName\": \"Souza\",\n    \"username\": \"daniel123\",\n    \"password\": \"senha123\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -44,7 +44,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"username\": \"admin123\",\n    \"password\": \"admin123\"\n}",
+							"raw": "{\n    \"username\": \"daniel123\",\n    \"password\": \"senha123\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -108,7 +108,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJBUEkgU09DSUFMTkVUV09SSyIsInN1YiI6ImxvZ2luMTIzNCIsInJvbGUiOiJVU0VSIiwiZXhwIjoxNzI2MzU5NjMxfQ.Etk2DmzVF7DInmSKQ1QwKCp9Lwi2CQbI21DES3HLVPg",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJBUEkgU09DSUFMTkVUV09SSyIsInN1YiI6ImRhbmllbDEyMyIsInJvbGUiOiJVU0VSIiwiZXhwIjoxNzI2NTI4NzAxfQ.UKhaIqqDtbAzQh2Pc0cXG0I9lJTUxG-ffrnTrVKfYuQ",
 									"type": "string"
 								}
 							]
@@ -263,6 +263,35 @@
 								"api",
 								"reject",
 								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SHOW PROFILE",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJBUEkgU09DSUFMTkVUV09SSyIsInN1YiI6ImRhbmllbDEyMyIsInJvbGUiOiJVU0VSIiwiZXhwIjoxNzI2NTI4NzAxfQ.UKhaIqqDtbAzQh2Pc0cXG0I9lJTUxG-ffrnTrVKfYuQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/profile",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"profile"
 							]
 						}
 					},

@@ -2,6 +2,7 @@ package com.dnsouzadev.social_network.controller;
 
 import com.dnsouzadev.social_network.dto.FriendRequestResponseDto;
 import com.dnsouzadev.social_network.dto.UserDetailsDto;
+import com.dnsouzadev.social_network.dto.UserLoginDto;
 import com.dnsouzadev.social_network.dto.UserResponseDto;
 import com.dnsouzadev.social_network.helper.GetUserByJwt;
 import com.dnsouzadev.social_network.model.User;
@@ -39,9 +40,14 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody UserDetailsDto user) {
+    public ResponseEntity<String> login(@RequestBody UserLoginDto user) {
         String jwt = service.login(user);
         return ResponseEntity.ok(jwt);
+    }
+
+    @GetMapping("/profile")
+    public ResponseEntity<UserResponseDto> getProfile(HttpServletRequest request) {
+        return ResponseEntity.ok(service.getProfile(getUserByJwt.getUser(request)));
     }
 
     @GetMapping("/friends")

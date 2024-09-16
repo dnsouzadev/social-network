@@ -1,6 +1,7 @@
 package com.dnsouzadev.social_network.service;
 
 import com.dnsouzadev.social_network.dto.UserDetailsDto;
+import com.dnsouzadev.social_network.dto.UserLoginDto;
 import com.dnsouzadev.social_network.dto.UserResponseDto;
 import com.dnsouzadev.social_network.exception.CadastroException;
 import com.dnsouzadev.social_network.exception.LoginException;
@@ -37,14 +38,14 @@ public class UserService {
             boolean userExists = userRepository.existsUserByUsername(userDto.username());
             if (userExists) throw new CadastroException("User already exists");
 
-            User user = new User(userDto.username(), userDto.password());
+            User user = new User(userDto.firstName(), userDto.lastName(), userDto.username(), userDto.password());
             userRepository.save(user);
         } catch (Exception e) {
             throw new CadastroException(e.getMessage());
         }
     }
 
-    public String login(UserDetailsDto dto) {
+    public String login(UserLoginDto dto) {
         if (dto.password() == null) throw new LoginException("Senha invalida");
 
         Optional<User> user = userRepository.findByUsername(dto.username());
@@ -60,7 +61,7 @@ public class UserService {
     public List<UserResponseDto> findAll() {
         try {
             List<User> users = userRepository.findAll();
-            return users.stream().map(user -> new UserResponseDto(user.getId(), user.getUsername(), user.getTypeAccount())).collect(Collectors.toList());
+            return users.stream().map(user -> new UserResponseDto(user.getId(), user.getFirstName(), user.getLastName(), user.getUsername(), user.getTypeAccount())).collect(Collectors.toList());
         } catch (Exception e) {
             throw new RuntimeException();
         }
@@ -81,7 +82,17 @@ public class UserService {
     public List<UserResponseDto> findAllPublicUsers() {
         try {
             List<User> users = userRepository.findAllByTypeAccount(TYPE_ACOOUNT.PUBLIC);
-            return users.stream().map(user -> new UserResponseDto(user.getId(), user.getUsername(), user.getTypeAccount())).collect(Collectors.toList());
+            return users.stream().map(user -> new UserResponseDto(user.getId(), user.getFirstName(), user.getLastName(), user.getUsername(), user.getTypeAccount())).collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public UserResponseDto getProfile(String username) {
+        try {
+            User user = userRepository.findByUsername(username).orElseThrow();
+            return new UserResponseDto(user.getId(), user.getFirstName(), user.getLastName(), user.getUsername(), user.getTypeAccount());
         } catch (Exception e) {
             throw new RuntimeException();
         }

@@ -29,9 +29,9 @@ public class FriendshipService {
         List<UserResponseDto> friends = new ArrayList<>();
         for (Friendship friendship : friendships) {
             if (friendship.getUser1().equals(user)) {
-                friends.add(new UserResponseDto(friendship.getUser2().getId(), friendship.getUser2().getUsername(), friendship.getUser2().getTypeAccount()));
+                friends.add(new UserResponseDto(friendship.getUser2().getId(), friendship.getUser2().getFirstName(), friendship.getUser2().getLastName(), friendship.getUser2().getUsername(), friendship.getUser2().getTypeAccount()));
             } else {
-                friends.add(new UserResponseDto(friendship.getUser1().getId(), friendship.getUser1().getUsername(), friendship.getUser1().getTypeAccount()));
+                friends.add(new UserResponseDto(friendship.getUser1().getId(), friendship.getUser1().getFirstName(), friendship.getUser1().getLastName(),friendship.getUser1().getUsername(), friendship.getUser1().getTypeAccount()));
             }
         }
 

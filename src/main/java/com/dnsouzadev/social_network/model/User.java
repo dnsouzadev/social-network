@@ -20,6 +20,10 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String firstName;
+
+    private String lastName;
+
     @Column(unique = true)
     private String username;
 
@@ -41,7 +45,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "receiver")
     private Set<FriendRequest> receivedFriendRequests;
 
-    public User(String username, String password) {
+    public User(String firstName, String lastName, String username, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.username = username;
         this.password = password;
         this.role = ROLE.valueOf("USER");
@@ -49,10 +55,20 @@ public class User implements UserDetails {
         this.createdAt = new Date();
     }
 
-    public User(String username, String password, ROLE role) {
+    public User(String firstName, String lastName, String username, String password, ROLE role) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.username = username;
         this.password = password;
         this.role = role;
+        this.typeAccount = TYPE_ACOOUNT.valueOf("PUBLIC");
+        this.createdAt = new Date();
+    }
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+        this.role = ROLE.valueOf("USER");
         this.typeAccount = TYPE_ACOOUNT.valueOf("PUBLIC");
         this.createdAt = new Date();
     }

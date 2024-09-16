@@ -10,6 +10,7 @@
 - Rejeição de solicitação de amizade
 - Remoção de amizade
 - Listagem de amigos
+- Perfil
 
 # Tecnologias Utilizadas
 - Java

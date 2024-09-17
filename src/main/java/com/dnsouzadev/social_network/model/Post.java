@@ -1,10 +1,13 @@
 package com.dnsouzadev.social_network.model;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Set;
 
+@Getter @Setter @NoArgsConstructor @EqualsAndHashCode(of = "id")
 @Entity
 public class Post {
 
@@ -27,5 +30,11 @@ public class Post {
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt = new Date();
+
+    public Post(String content, User user) {
+        this.content = content;
+        this.user = user;
+        this.createdAt = new Date();
+    }
 
 }

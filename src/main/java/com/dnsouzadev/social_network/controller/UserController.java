@@ -65,7 +65,7 @@ public class UserController {
         return ResponseEntity.ok(friendRequestService.getFriendRequests(getUserByJwt.getUser(request)));
     }
 
-    @PostMapping("/change")
+    @GetMapping("/change")
     public ResponseEntity<Void> changeTypeUser(HttpServletRequest request) {
         var usernameLogged = getUserByJwt.getUser(request);
         User userLogged = service.findByUsername(usernameLogged);

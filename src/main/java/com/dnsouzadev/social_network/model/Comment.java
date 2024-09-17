@@ -1,9 +1,15 @@
 package com.dnsouzadev.social_network.model;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.Date;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(of = "id")
 @Entity
 public class Comment {
 

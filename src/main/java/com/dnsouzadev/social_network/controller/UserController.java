@@ -1,13 +1,12 @@
 package com.dnsouzadev.social_network.controller;
 
-import com.dnsouzadev.social_network.dto.FriendRequestResponseDto;
-import com.dnsouzadev.social_network.dto.UserDetailsDto;
-import com.dnsouzadev.social_network.dto.UserLoginDto;
-import com.dnsouzadev.social_network.dto.UserResponseDto;
+import com.dnsouzadev.social_network.dto.*;
 import com.dnsouzadev.social_network.helper.GetUserByJwt;
+import com.dnsouzadev.social_network.model.Post;
 import com.dnsouzadev.social_network.model.User;
 import com.dnsouzadev.social_network.service.FriendRequestService;
 import com.dnsouzadev.social_network.service.FriendshipService;
+import com.dnsouzadev.social_network.service.PostService;
 import com.dnsouzadev.social_network.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -33,6 +32,9 @@ public class UserController {
     @Autowired
     private FriendRequestService friendRequestService;
 
+    @Autowired
+    private PostService postService;
+
     @PostMapping("/signup")
     public ResponseEntity<Void> signup(@RequestBody @Valid UserDetailsDto user) {
         service.signup(user);
@@ -46,8 +48,14 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<UserResponseDto> getProfile(HttpServletRequest request) {
-        return ResponseEntity.ok(service.getProfile(getUserByJwt.getUser(request)));
+    public ResponseEntity<ProfileResponseDto> getProfile(HttpServletRequest request) {
+        var username = getUserByJwt.getUser(request);
+        User profile = service.findByUsername(username);
+        List<PostDto> posts = postService.listPostsByUser(profile);
+        ListPostsDto postsDto = new ListPostsDto(posts);
+        return ResponseEntity.ok(new ProfileResponseDto(profile, postsDto));
+
+
     }
 
     @GetMapping("/friends")

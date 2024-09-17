@@ -11,6 +11,7 @@ import java.util.Date;
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 @Entity
+@Table(name = "`like`")
 public class Like {
 
     @Id

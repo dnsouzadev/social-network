@@ -10,7 +10,7 @@ public record PostDto(
         Long id,
         String username,
         String postContent,
-        Set<Like> like,
+        Set<LikeDto> like,
         Set<Comment> comment,
         Date createdAt
         ) {

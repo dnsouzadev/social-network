@@ -1,8 +1,10 @@
 package com.dnsouzadev.social_network.service;
 
 import com.dnsouzadev.social_network.dto.CreatePostDto;
+import com.dnsouzadev.social_network.dto.LikeDto;
 import com.dnsouzadev.social_network.dto.PostDto;
 import com.dnsouzadev.social_network.helper.CheckFriendship;
+import com.dnsouzadev.social_network.model.Like;
 import com.dnsouzadev.social_network.model.Post;
 import com.dnsouzadev.social_network.model.User;
 import com.dnsouzadev.social_network.repository.PostRepository;
@@ -10,8 +12,8 @@ import com.dnsouzadev.social_network.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class PostService {
@@ -95,6 +97,10 @@ public class PostService {
     }
 
     private PostDto convertToDto(Post post) {
-        return new PostDto(post.getId(), post.getUser().getUsername(), post.getContent(), post.getLikes(), post.getComments(), post.getCreatedAt());
+        return new PostDto(post.getId(), post.getUser().getUsername(), post.getContent(), convertToLikeDto(post.getLikes()), post.getComments(), post.getCreatedAt());
+    }
+
+    private Set<LikeDto> convertToLikeDto(Set<Like> likes) {
+        return likes.stream().map(like -> new LikeDto(like.getUser().getUsername())).collect(Collectors.toSet());
     }
 }

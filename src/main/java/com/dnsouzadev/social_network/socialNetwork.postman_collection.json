@@ -618,6 +618,36 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "LIKE A POST",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJBUEkgU09DSUFMTkVUV09SSyIsInN1YiI6ImRhbmllbDEyMyIsInJvbGUiOiJVU0VSIiwiZXhwIjoxNzI2Njk5MDA3fQ.U9AeYVs8-mNpdvIHsxZ2pmn59SCmyIV2E7VH245xoug",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/like/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"like",
+								"2"
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"event": [

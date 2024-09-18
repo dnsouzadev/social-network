@@ -11,6 +11,7 @@
 - Remoção de amizade
 - Listagem de amigos
 - Perfil
+- Posts 
 
 # Tecnologias Utilizadas
 - Java

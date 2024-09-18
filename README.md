@@ -11,7 +11,8 @@
 - Remoção de amizade
 - Listagem de amigos
 - Perfil
-- Posts 
+- Posts
+- Likes
 
 # Tecnologias Utilizadas
 - Java
@@ -24,6 +25,5 @@
 
 ### 🛠️ Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull requests.
 
-### 🚀 Esse projeto foi desenvolvido com o intuito de aprendizado e retirado de um desafio pratico retirado da [scm-spain](https://github.com/scm-spain/ms-ma--backend-test).
 
 ⌨️ por [Daniel Souza](https://github.com/dnsouzadev) 😊

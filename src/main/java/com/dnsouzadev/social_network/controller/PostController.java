@@ -40,4 +40,11 @@ public class PostController {
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updatePost(HttpServletRequest request, @PathVariable Long id, @RequestBody CreatePostDto post) {
+        var username = getUserByJwt.getUser(request);
+        postService.updatePost(username, id, post);
+        return ResponseEntity.ok().build();
+    }
+
 }

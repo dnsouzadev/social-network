@@ -12,11 +12,14 @@
 				{
 					"name": "SIGNUP USER",
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"firstName\": \"Daniel\",\n    \"lastName\": \"Souza\",\n    \"username\": \"daniel123\",\n    \"password\": \"senha123\"\n}",
+							"raw": "{\n    \"firstName\": \"Daniel\",\n    \"lastName\": \"Souza\",\n    \"username\": \"daniel1234\",\n    \"password\": \"senha123\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -40,6 +43,9 @@
 				{
 					"name": "LOGIN",
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -74,16 +80,6 @@
 				{
 					"name": "FIND ALL PUBLIC USERS",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJBUEkgU09DSUFMTkVUV09SSyIsInN1YiI6ImxvZ2luMTIzNCIsInJvbGUiOiJVU0VSIiwiZXhwIjoxNzI2MzU5NjMxfQ.Etk2DmzVF7DInmSKQ1QwKCp9Lwi2CQbI21DES3HLVPg",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -103,16 +99,6 @@
 				{
 					"name": "GET FRIENDS",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJBUEkgU09DSUFMTkVUV09SSyIsInN1YiI6ImRhbmllbDEyMyIsInJvbGUiOiJVU0VSIiwiZXhwIjoxNzI2NTI4NzAxfQ.UKhaIqqDtbAzQh2Pc0cXG0I9lJTUxG-ffrnTrVKfYuQ",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -151,16 +137,6 @@
 				{
 					"name": "GET REQUEST FRIENDS",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJBUEkgU09DSUFMTkVUV09SSyIsInN1YiI6ImRhbmllbDEyMyIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTcyNjM1OTkxNn0.RHWZBlXVQSDvEVDxU4Qj6P7KNPm1jGHGCmpv1v9jqFc",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -180,21 +156,11 @@
 				{
 					"name": "CREATE FRIEND REQUEST",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJBUEkgU09DSUFMTkVUV09SSyIsInN1YiI6ImxvZ2luMTIzNCIsInJvbGUiOiJVU0VSIiwiZXhwIjoxNzI2MzU5NjMxfQ.Etk2DmzVF7DInmSKQ1QwKCp9Lwi2CQbI21DES3HLVPg",
-									"type": "string"
-								}
-							]
-						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"receiver\": \"admin123\"\n}",
+							"raw": "{\n    \"receiver\": \"daniel1234\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -270,19 +236,60 @@
 				},
 				{
 					"name": "SHOW PROFILE",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const request = {",
+									"    url: 'http://localhost:8080/login',",
+									"    method: 'POST',",
+									"    body: {",
+									"        mode: 'raw',",
+									"        raw: JSON.stringify({",
+									"            username: \"daniel123\",",
+									"            password: \"senha123\"",
+									"        })",
+									"    },",
+									"    header: {",
+									"        \"Content-Type\": \"application/json\"",
+									"    }",
+									"}",
+									"",
+									"pm.sendRequest(request, function(err, res) {",
+									"    console.log(res)",
+									"    var token = \"Bearer \" + res.text();",
+									"    if (err) {",
+									"        console.log(err)",
+									"    } else {",
+									"        pm.environment.set(\"bearer_token\", token)",
+									"    }",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJBUEkgU09DSUFMTkVUV09SSyIsInN1YiI6ImRhbmllbDEyMyIsInJvbGUiOiJVU0VSIiwiZXhwIjoxNzI2NTI4NzAxfQ.UKhaIqqDtbAzQh2Pc0cXG0I9lJTUxG-ffrnTrVKfYuQ",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJBUEkgU09DSUFMTkVUV09SSyIsInN1YiI6ImRhbmllbDEyMyIsInJvbGUiOiJVU0VSIiwiZXhwIjoxNzI2Njk1NTI5fQ.TRoC6_a84F1PBol3Tljqr0BLW4kyor2dXGH7PFg0TmQ",
 									"type": "string"
 								}
 							]
 						},
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{bearer_token}}",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "http://localhost:8080/profile",
 							"protocol": "http",
@@ -298,7 +305,52 @@
 					"response": []
 				}
 			],
-			"description": "requests that can be make with user login"
+			"description": "requests that can be make with user login",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"const request = {",
+							"    url: 'http://localhost:8080/login',",
+							"    method: 'POST',",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify({",
+							"            username: \"daniel1234\",",
+							"            password: \"senha123\"",
+							"        })",
+							"    },",
+							"    header: {",
+							"        \"Content-Type\": \"application/json\"",
+							"    }",
+							"}",
+							"",
+							"pm.sendRequest(request, function(err, res) {",
+							"    console.log(res)",
+							"    var token = \"Bearer \" + res.text();",
+							"    if (err) {",
+							"        console.log(err)",
+							"    } else {",
+							"        pm.environment.set(\"bearer_token\", token)",
+							"    }",
+							"})"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
 		},
 		{
 			"name": "ADMIN REQUESTS",
@@ -426,6 +478,218 @@
 				}
 			],
 			"description": "REQUESTS THAT CAN BE MAKE BY ONLY ADMIN"
+		},
+		{
+			"name": "POST REQUESTS",
+			"item": [
+				{
+					"name": "CREATE A POST",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJBUEkgU09DSUFMTkVUV09SSyIsInN1YiI6ImRhbmllbDEyMzQiLCJyb2xlIjoiVVNFUiIsImV4cCI6MTcyNjY5MzIzNn0.PHMW6klyytItWMcf_7AUbkjk-zevj_9uHe6u6yEvMvM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"content\": \"my fourth content\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/post",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"post"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SHOW A POST",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/post/5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"post",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE A POST",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJBUEkgU09DSUFMTkVUV09SSyIsInN1YiI6ImRhbmllbDEyMyIsInJvbGUiOiJVU0VSIiwiZXhwIjoxNzI2Njk1NTI5fQ.TRoC6_a84F1PBol3Tljqr0BLW4kyor2dXGH7PFg0TmQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"content\": \"atualizando meu post\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/post/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"post",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE POST",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJBUEkgU09DSUFMTkVUV09SSyIsInN1YiI6ImRhbmllbDEyMzQiLCJyb2xlIjoiVVNFUiIsImV4cCI6MTcyNjY5MzQxNX0.qIssB-kAxC83lEFSA0fL3g0zcDpoK6-LWfDiYJ3WCno",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/post/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"post",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"const request = {",
+							"    url: 'http://localhost:8080/login',",
+							"    method: 'POST',",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify({",
+							"            username: \"daniel1234\",",
+							"            password: \"senha123\"",
+							"        })",
+							"    },",
+							"    header: {",
+							"        \"Content-Type\": \"application/json\"",
+							"    }",
+							"}",
+							"",
+							"pm.sendRequest(request, function(err, res) {",
+							"    console.log(res)",
+							"    var token = \"Bearer \" + res.text();",
+							"    if (err) {",
+							"        console.log(err)",
+							"    } else {",
+							"        pm.environment.set(\"bearer_token\", token)",
+							"    }",
+							"})"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "inherit"
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }

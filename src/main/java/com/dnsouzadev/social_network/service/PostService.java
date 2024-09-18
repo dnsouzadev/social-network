@@ -78,6 +78,22 @@ public class PostService {
         }
     }
 
+    public void updatePost(String username, Long id, CreatePostDto content) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        postRepository.findPostById(id)
+                .ifPresentOrElse(post -> {
+                    if (post.getUser().equals(user)) {
+                        post.setContent(content.content());
+                        postRepository.save(post);
+                    } else {
+                        throw new RuntimeException("User not allowed to update this post");
+                    }
+                }, () -> {
+                    throw new RuntimeException("Post not found");
+                });
+    }
+
     private PostDto convertToDto(Post post) {
         return new PostDto(post.getId(), post.getUser().getUsername(), post.getContent(), post.getLikes(), post.getComments(), post.getCreatedAt());
     }

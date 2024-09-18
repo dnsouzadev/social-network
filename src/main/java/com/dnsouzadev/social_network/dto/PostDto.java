@@ -8,7 +8,8 @@ import java.util.Set;
 
 public record PostDto(
         Long id,
-        String content,
+        String username,
+        String postContent,
         Set<Like> like,
         Set<Comment> comment,
         Date createdAt

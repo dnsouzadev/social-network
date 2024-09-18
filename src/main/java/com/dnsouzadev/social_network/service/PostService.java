@@ -2,6 +2,7 @@ package com.dnsouzadev.social_network.service;
 
 import com.dnsouzadev.social_network.dto.CreatePostDto;
 import com.dnsouzadev.social_network.dto.PostDto;
+import com.dnsouzadev.social_network.helper.CheckFriendship;
 import com.dnsouzadev.social_network.model.Post;
 import com.dnsouzadev.social_network.model.User;
 import com.dnsouzadev.social_network.repository.PostRepository;
@@ -21,6 +22,9 @@ public class PostService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private CheckFriendship checkFriendship;
+
     public void createPost(String username, CreatePostDto content) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -33,7 +37,7 @@ public class PostService {
         List<Post> listPosts = postRepository.findByUser(user);
         List<PostDto> listPostDto = new ArrayList<>();
         for (Post post : listPosts) {
-            listPostDto.add(new PostDto(post.getId(), post.getContent(), post.getLikes(), post.getComments(), post.getCreatedAt()));
+            listPostDto.add(convertToDto(post));
         }
         return listPostDto;
     }
@@ -57,4 +61,24 @@ public class PostService {
                 });
     }
 
+    public PostDto getPost(String username, Long id) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        Post post = postRepository.findPostById(id)
+                .orElseThrow(() -> new RuntimeException("Post not found"));
+
+        if (post.getUser().getTypeAccount().equals("PUBLIC")) {
+            return convertToDto(post);
+        } else if (checkFriendship != null && checkFriendship.check(username, post.getUser().getUsername())) {
+            return convertToDto(post);
+        } else if (post.getUser().equals(user)) {
+            return convertToDto(post);
+        } else {
+            throw new RuntimeException("User not allowed to get this post");
+        }
+    }
+
+    private PostDto convertToDto(Post post) {
+        return new PostDto(post.getId(), post.getUser().getUsername(), post.getContent(), post.getLikes(), post.getComments(), post.getCreatedAt());
+    }
 }

@@ -1,7 +1,9 @@
 package com.dnsouzadev.social_network.controller;
 
 import com.dnsouzadev.social_network.dto.CreatePostDto;
+import com.dnsouzadev.social_network.dto.PostDto;
 import com.dnsouzadev.social_network.helper.GetUserByJwt;
+import com.dnsouzadev.social_network.model.Post;
 import com.dnsouzadev.social_network.service.PostService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,12 @@ public class PostController {
         var username = getUserByJwt.getUser(request);
         postService.createPost(username, post);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PostDto> getPost(HttpServletRequest request, @PathVariable Long id) {
+        var username = getUserByJwt.getUser(request);
+        return ResponseEntity.ok(postService.getPost(username, id));
     }
 
     @DeleteMapping("/{id}")

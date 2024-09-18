@@ -42,8 +42,19 @@ public class PostService {
         return postRepository.findAll();
     }
 
-    public void deletePost(Long id) {
-        postRepository.deleteById(id);
+    public void deletePost(String username, Long id) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        postRepository.findPostById(id)
+                .ifPresentOrElse(post -> {
+                    if (post.getUser().equals(user)) {
+                        postRepository.delete(post);
+                    } else {
+                        throw new RuntimeException("User not allowed to delete this post");
+                    }
+                }, () -> {
+                    throw new RuntimeException("Post not found");
+                });
     }
 
 }

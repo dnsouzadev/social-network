@@ -1,15 +1,14 @@
 package com.dnsouzadev.social_network.controller;
 
 import com.dnsouzadev.social_network.dto.CreatePostDto;
+import com.dnsouzadev.social_network.dto.PostDto;
 import com.dnsouzadev.social_network.helper.GetUserByJwt;
+import com.dnsouzadev.social_network.model.Post;
 import com.dnsouzadev.social_network.service.PostService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/post")
@@ -25,6 +24,26 @@ public class PostController {
     public ResponseEntity<Void> createPost(HttpServletRequest request, @RequestBody CreatePostDto post) {
         var username = getUserByJwt.getUser(request);
         postService.createPost(username, post);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PostDto> getPost(HttpServletRequest request, @PathVariable Long id) {
+        var username = getUserByJwt.getUser(request);
+        return ResponseEntity.ok(postService.getPost(username, id));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePost(HttpServletRequest request, @PathVariable Long id) {
+        var username = getUserByJwt.getUser(request);
+        postService.deletePost(username, id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updatePost(HttpServletRequest request, @PathVariable Long id, @RequestBody CreatePostDto post) {
+        var username = getUserByJwt.getUser(request);
+        postService.updatePost(username, id, post);
         return ResponseEntity.ok().build();
     }
 

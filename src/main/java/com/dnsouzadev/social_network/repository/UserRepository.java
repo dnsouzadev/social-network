@@ -1,5 +1,6 @@
 package com.dnsouzadev.social_network.repository;
 
+import ch.qos.logback.core.net.SMTPAppenderBase;
 import com.dnsouzadev.social_network.model.TYPE_ACOOUNT;
 import com.dnsouzadev.social_network.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,5 +15,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Boolean existsUserByUsername(String username);
 
     Optional<User> findByUsername(String username);
+
+    @Query("SELECT CASE WHEN COUNT(u) > 0 THEN true ELSE false END FROM User u WHERE u.username = :username AND u.typeAccount = 'PRIVATE'")
+    boolean existsByUsernameAndIsHidden(String username);
+
+    @Query("SELECT u.username FROM User u WHERE u.id = :postId")
+    Optional<User> findByPostId(Long postId);
 
 }

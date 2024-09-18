@@ -1,5 +1,6 @@
 package com.dnsouzadev.social_network.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -8,7 +9,6 @@ import java.util.Date;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 @Entity
 @Table(name = "`like`")
@@ -30,5 +30,10 @@ public class Like {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt = new Date();
 
-    // Construtores, Getters e Setters
+    public Like(User user, Post post) {
+        this.user = user;
+        this.post = post;
+        this.createdAt = new Date();
+    }
+
 }

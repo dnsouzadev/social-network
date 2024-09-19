@@ -13,6 +13,7 @@
 - Perfil
 - Posts
 - Likes
+- Comentarios
 
 # Tecnologias Utilizadas
 - Java

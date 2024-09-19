@@ -6,8 +6,6 @@
 
 - Criação de contas de usuários e administradores de contas
 - Solicitação de amizade
-- Aceitação de solicitação de amizade
-- Rejeição de solicitação de amizade
 - Remoção de amizade
 - Listagem de amigos
 - Perfil

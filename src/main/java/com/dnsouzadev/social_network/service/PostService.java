@@ -1,9 +1,11 @@
 package com.dnsouzadev.social_network.service;
 
+import com.dnsouzadev.social_network.dto.CommentDto;
 import com.dnsouzadev.social_network.dto.CreatePostDto;
 import com.dnsouzadev.social_network.dto.LikeDto;
 import com.dnsouzadev.social_network.dto.PostDto;
 import com.dnsouzadev.social_network.helper.CheckFriendship;
+import com.dnsouzadev.social_network.model.Comment;
 import com.dnsouzadev.social_network.model.Like;
 import com.dnsouzadev.social_network.model.Post;
 import com.dnsouzadev.social_network.model.User;
@@ -97,10 +99,14 @@ public class PostService {
     }
 
     private PostDto convertToDto(Post post) {
-        return new PostDto(post.getId(), post.getUser().getUsername(), post.getContent(), convertToLikeDto(post.getLikes()), post.getComments(), post.getCreatedAt());
+        return new PostDto(post.getId(), post.getUser().getUsername(), post.getContent(), convertToLikeDto(post.getLikes()), convertToCommentDto(post.getComments()), post.getCreatedAt());
     }
 
     private Set<LikeDto> convertToLikeDto(Set<Like> likes) {
         return likes.stream().map(like -> new LikeDto(like.getUser().getUsername())).collect(Collectors.toSet());
+    }
+
+    private Set<CommentDto> convertToCommentDto(Set<Comment> comments) {
+        return comments.stream().map(c -> new CommentDto(c.getId(), c.getUser().getFirstName(), c.getUser().getLastName(), c.getUser().getUsername(), c.getContent(), c.getCreatedAt())).collect(Collectors.toSet());
     }
 }

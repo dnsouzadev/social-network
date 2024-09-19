@@ -31,7 +31,7 @@ public class LikeService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new RuntimeException("Post not found"));
 
         boolean isLiked = likeRepository.existsByUserAndPost(user, post);
         boolean isPrivateUser = userRepository.existsByUsernameAndIsHidden(username);

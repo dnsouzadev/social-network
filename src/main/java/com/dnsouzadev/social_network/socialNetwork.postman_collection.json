@@ -50,7 +50,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"username\": \"daniel123\",\n    \"password\": \"senha123\"\n}",
+							"raw": "{\n    \"username\": \"daniel1234\",\n    \"password\": \"senha123\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -272,16 +272,6 @@
 						}
 					],
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJBUEkgU09DSUFMTkVUV09SSyIsInN1YiI6ImRhbmllbDEyMyIsInJvbGUiOiJVU0VSIiwiZXhwIjoxNzI2Njk1NTI5fQ.TRoC6_a84F1PBol3Tljqr0BLW4kyor2dXGH7PFg0TmQ",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [
 							{
@@ -643,6 +633,164 @@
 							"port": "8080",
 							"path": [
 								"like",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"const request = {",
+							"    url: 'http://localhost:8080/login',",
+							"    method: 'POST',",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify({",
+							"            username: \"daniel1234\",",
+							"            password: \"senha123\"",
+							"        })",
+							"    },",
+							"    header: {",
+							"        \"Content-Type\": \"application/json\"",
+							"    }",
+							"}",
+							"",
+							"pm.sendRequest(request, function(err, res) {",
+							"    console.log(res)",
+							"    var token = \"Bearer \" + res.text();",
+							"    if (err) {",
+							"        console.log(err)",
+							"    } else {",
+							"        pm.environment.set(\"bearer_token\", token)",
+							"    }",
+							"})"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "COMMNENT REQUESTS",
+			"item": [
+				{
+					"name": "CREATE A COMMENT",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJBUEkgU09DSUFMTkVUV09SSyIsInN1YiI6ImRhbmllbDEyMyIsInJvbGUiOiJVU0VSIiwiZXhwIjoxNzI2NzM5NTU3fQ.j8Z0Nl_XzQAltFV8B05n75zwBrpozqQwQDTwszQivsQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"comment\": \"criando meu segundo comentario\",\n    \"postId\": \"2\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/comment",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"comment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE COMMENT",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"comment\": \"criando meu primeiro comentario editado\",\n    \"postId\": \"2\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/comment/update/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"comment",
+								"update",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE A COMMENT",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJBUEkgU09DSUFMTkVUV09SSyIsInN1YiI6ImRhbmllbDEyMyIsInJvbGUiOiJVU0VSIiwiZXhwIjoxNzI2NzM5NTU3fQ.j8Z0Nl_XzQAltFV8B05n75zwBrpozqQwQDTwszQivsQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/comment/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"comment",
 								"2"
 							]
 						}

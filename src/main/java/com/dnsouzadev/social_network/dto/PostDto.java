@@ -11,7 +11,7 @@ public record PostDto(
         String username,
         String postContent,
         Set<LikeDto> like,
-        Set<Comment> comment,
+        Set<CommentDto> comment,
         Date createdAt
         ) {
 }

@@ -8,7 +8,6 @@ import java.util.Date;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 @Entity
 public class Comment {
@@ -31,5 +30,10 @@ public class Comment {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt = new Date();
 
-    // Construtores, Getters e Setters
+    public Comment(User user, Post post, String content) {
+        this.user = user;
+        this.post = post;
+        this.content = content;
+        this.createdAt = new Date();
+    }
 }

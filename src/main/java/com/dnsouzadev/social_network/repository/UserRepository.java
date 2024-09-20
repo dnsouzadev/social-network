@@ -1,8 +1,7 @@
 package com.dnsouzadev.social_network.repository;
 
-import ch.qos.logback.core.net.SMTPAppenderBase;
-import com.dnsouzadev.social_network.model.TYPE_ACOOUNT;
-import com.dnsouzadev.social_network.model.User;
+import com.dnsouzadev.social_network.domain.enums.TypeAccount;
+import com.dnsouzadev.social_network.domain.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -10,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-    List<User> findAllByTypeAccount(TYPE_ACOOUNT typeAcoount);
+    List<User> findAllByTypeAccount(TypeAccount typeAcoount);
 
     Boolean existsUserByUsername(String username);
 

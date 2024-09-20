@@ -1,4 +1,4 @@
-package com.dnsouzadev.social_network.model;
+package com.dnsouzadev.social_network.domain.enums;
 
 public enum FriendRequestStatus {
     PENDING,

@@ -1,6 +1,6 @@
 package com.dnsouzadev.social_network.controller;
 
-import com.dnsouzadev.social_network.helper.GetUserByJwt;
+import com.dnsouzadev.social_network.helper.JwtUtil;
 import com.dnsouzadev.social_network.service.LikeService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +17,11 @@ public class LikeController {
     private LikeService likeService;
 
     @Autowired
-    private GetUserByJwt getUserByJwt;
+    private JwtUtil jwtUtil;
 
     @GetMapping("/{postId}")
     public void likePost(HttpServletRequest request, @PathVariable Long postId) {
-        var username = getUserByJwt.getUser(request);
+        var username = jwtUtil.getUsername(request);
         likeService.likePost(username, postId);
     }
 

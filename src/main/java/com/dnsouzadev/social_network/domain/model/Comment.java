@@ -1,6 +1,5 @@
-package com.dnsouzadev.social_network.model;
+package com.dnsouzadev.social_network.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,29 +10,30 @@ import java.util.Date;
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 @Entity
-@Table(name = "`like`")
-public class Like {
+public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String content;
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User user; // Usuário que deu o like
+    private User user; // Autor do comentário
 
     @ManyToOne
     @JoinColumn(name = "post_id", nullable = false)
-    private Post post; // Post que recebeu o like
+    private Post post; // Post que recebeu o comentário
 
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt = new Date();
 
-    public Like(User user, Post post) {
+    public Comment(User user, Post post, String content) {
         this.user = user;
         this.post = post;
+        this.content = content;
         this.createdAt = new Date();
     }
-
 }

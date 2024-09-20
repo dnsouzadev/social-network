@@ -1,8 +1,8 @@
 package com.dnsouzadev.social_network.service;
 
 import com.dnsouzadev.social_network.dto.UserResponseDto;
-import com.dnsouzadev.social_network.model.Friendship;
-import com.dnsouzadev.social_network.model.User;
+import com.dnsouzadev.social_network.domain.model.Friendship;
+import com.dnsouzadev.social_network.domain.model.User;
 import com.dnsouzadev.social_network.repository.FriendshipRepository;
 import com.dnsouzadev.social_network.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

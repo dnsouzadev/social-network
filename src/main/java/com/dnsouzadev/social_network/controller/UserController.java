@@ -1,9 +1,8 @@
 package com.dnsouzadev.social_network.controller;
 
 import com.dnsouzadev.social_network.dto.*;
-import com.dnsouzadev.social_network.helper.GetUserByJwt;
-import com.dnsouzadev.social_network.model.Post;
-import com.dnsouzadev.social_network.model.User;
+import com.dnsouzadev.social_network.helper.JwtUtil;
+import com.dnsouzadev.social_network.domain.model.User;
 import com.dnsouzadev.social_network.service.FriendRequestService;
 import com.dnsouzadev.social_network.service.FriendshipService;
 import com.dnsouzadev.social_network.service.PostService;
@@ -27,7 +26,7 @@ public class UserController {
     private FriendshipService friendshipService;
 
     @Autowired
-    private GetUserByJwt getUserByJwt;
+    private JwtUtil jwtUtil;
 
     @Autowired
     private FriendRequestService friendRequestService;
@@ -49,7 +48,7 @@ public class UserController {
 
     @GetMapping("/profile")
     public ResponseEntity<ProfileResponseDto> getProfile(HttpServletRequest request) {
-        var username = getUserByJwt.getUser(request);
+        var username = jwtUtil.getUsername(request);
         User profile = service.findByUsername(username);
         List<PostDto> posts = postService.listPostsByUser(profile);
         ListPostsDto postsDto = new ListPostsDto(posts);
@@ -60,7 +59,7 @@ public class UserController {
 
     @GetMapping("/friends")
     public ResponseEntity<List<UserResponseDto>> getFriends(HttpServletRequest request) {
-        return ResponseEntity.ok(friendshipService.listFriends(getUserByJwt.getUser(request)));
+        return ResponseEntity.ok(friendshipService.listFriends(jwtUtil.getUsername(request)));
     }
 
     @GetMapping("/public")
@@ -70,12 +69,12 @@ public class UserController {
 
     @GetMapping("/requests")
     public ResponseEntity<List<FriendRequestResponseDto>> getFriendsRequests(HttpServletRequest request) {
-        return ResponseEntity.ok(friendRequestService.getFriendRequests(getUserByJwt.getUser(request)));
+        return ResponseEntity.ok(friendRequestService.getFriendRequests(jwtUtil.getUsername(request)));
     }
 
     @GetMapping("/change")
     public ResponseEntity<Void> changeTypeUser(HttpServletRequest request) {
-        var usernameLogged = getUserByJwt.getUser(request);
+        var usernameLogged = jwtUtil.getUsername(request);
         User userLogged = service.findByUsername(usernameLogged);
         service.change(userLogged.getId());
 
@@ -84,7 +83,7 @@ public class UserController {
 
     @GetMapping("/delete/{username}")
     public ResponseEntity<Void> deleteFriendship(@PathVariable String username, HttpServletRequest request) {
-        String sender = getUserByJwt.getUser(request);
+        String sender = jwtUtil.getUsername(request);
         friendshipService.deleteFriendship(sender, username);
         return ResponseEntity.ok().build();
     }

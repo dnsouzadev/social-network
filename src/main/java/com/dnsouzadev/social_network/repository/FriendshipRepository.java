@@ -1,7 +1,7 @@
 package com.dnsouzadev.social_network.repository;
 
-import com.dnsouzadev.social_network.model.Friendship;
-import com.dnsouzadev.social_network.model.User;
+import com.dnsouzadev.social_network.domain.model.Friendship;
+import com.dnsouzadev.social_network.domain.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

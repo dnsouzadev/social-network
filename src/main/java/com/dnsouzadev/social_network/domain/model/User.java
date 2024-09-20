@@ -1,6 +1,7 @@
-package com.dnsouzadev.social_network.model;
+package com.dnsouzadev.social_network.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.dnsouzadev.social_network.domain.enums.Role;
+import com.dnsouzadev.social_network.domain.enums.TypeAccount;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,10 +32,10 @@ public class User implements UserDetails {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private ROLE role;
+    private Role role;
 
     @Enumerated(EnumType.STRING)
-    private TYPE_ACOOUNT typeAccount;
+    private TypeAccount typeAccount;
 
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
@@ -60,30 +61,30 @@ public class User implements UserDetails {
         this.lastName = lastName;
         this.username = username;
         this.password = password;
-        this.role = ROLE.valueOf("USER");
-        this.typeAccount = TYPE_ACOOUNT.valueOf("PUBLIC");
+        this.role = Role.valueOf("USER");
+        this.typeAccount = TypeAccount.valueOf("PUBLIC");
         this.createdAt = new Date();
     }
 
-    public User(String firstName, String lastName, String username, String password, ROLE role) {
+    public User(String firstName, String lastName, String username, String password, Role role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.password = password;
         this.role = role;
-        this.typeAccount = TYPE_ACOOUNT.valueOf("PUBLIC");
+        this.typeAccount = TypeAccount.valueOf("PUBLIC");
         this.createdAt = new Date();
     }
 
     public User(String username, String password) {
         this.username = username;
         this.password = password;
-        this.role = ROLE.valueOf("USER");
-        this.typeAccount = TYPE_ACOOUNT.valueOf("PUBLIC");
+        this.role = Role.valueOf("USER");
+        this.typeAccount = TypeAccount.valueOf("PUBLIC");
         this.createdAt = new Date();
     }
 
-    public void changeTypeAccount(TYPE_ACOOUNT typeAccount) {
+    public void changeTypeAccount(TypeAccount typeAccount) {
         this.typeAccount = typeAccount;
     }
 
@@ -105,7 +106,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if(this.role == ROLE.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        if(this.role == Role.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
         else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 

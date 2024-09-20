@@ -4,11 +4,11 @@ import com.dnsouzadev.social_network.dto.CommentDto;
 import com.dnsouzadev.social_network.dto.CreatePostDto;
 import com.dnsouzadev.social_network.dto.LikeDto;
 import com.dnsouzadev.social_network.dto.PostDto;
-import com.dnsouzadev.social_network.helper.CheckFriendship;
-import com.dnsouzadev.social_network.model.Comment;
-import com.dnsouzadev.social_network.model.Like;
-import com.dnsouzadev.social_network.model.Post;
-import com.dnsouzadev.social_network.model.User;
+import com.dnsouzadev.social_network.helper.FriendshipUtil;
+import com.dnsouzadev.social_network.domain.model.Comment;
+import com.dnsouzadev.social_network.domain.model.Like;
+import com.dnsouzadev.social_network.domain.model.Post;
+import com.dnsouzadev.social_network.domain.model.User;
 import com.dnsouzadev.social_network.repository.PostRepository;
 import com.dnsouzadev.social_network.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class PostService {
     private UserRepository userRepository;
 
     @Autowired
-    private CheckFriendship checkFriendship;
+    private FriendshipUtil friendshipUtil;
 
     public void createPost(String username, CreatePostDto content) {
         User user = userRepository.findByUsername(username)
@@ -73,7 +73,7 @@ public class PostService {
 
         if (post.getUser().getTypeAccount().equals("PUBLIC")) {
             return convertToDto(post);
-        } else if (checkFriendship != null && checkFriendship.check(username, post.getUser().getUsername())) {
+        } else if (friendshipUtil != null && friendshipUtil.checkFriendship(username, post.getUser().getUsername())) {
             return convertToDto(post);
         } else if (post.getUser().equals(user)) {
             return convertToDto(post);

@@ -1,4 +1,4 @@
-package com.dnsouzadev.social_network.model;
+package com.dnsouzadev.social_network.domain.model;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -10,30 +10,29 @@ import java.util.Date;
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 @Entity
-public class Comment {
+@Table(name = "`like`")
+public class Like {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String content;
-
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User user; // Autor do comentário
+    private User user; // Usuário que deu o like
 
     @ManyToOne
     @JoinColumn(name = "post_id", nullable = false)
-    private Post post; // Post que recebeu o comentário
+    private Post post; // Post que recebeu o like
 
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt = new Date();
 
-    public Comment(User user, Post post, String content) {
+    public Like(User user, Post post) {
         this.user = user;
         this.post = post;
-        this.content = content;
         this.createdAt = new Date();
     }
+
 }

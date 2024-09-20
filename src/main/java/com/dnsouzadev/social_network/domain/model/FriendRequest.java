@@ -1,5 +1,6 @@
-package com.dnsouzadev.social_network.model;
+package com.dnsouzadev.social_network.domain.model;
 
+import com.dnsouzadev.social_network.domain.enums.FriendRequestStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;

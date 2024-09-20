@@ -1,8 +1,8 @@
 package com.dnsouzadev.social_network.service;
 
-import com.dnsouzadev.social_network.model.Like;
-import com.dnsouzadev.social_network.model.Post;
-import com.dnsouzadev.social_network.model.User;
+import com.dnsouzadev.social_network.domain.model.Like;
+import com.dnsouzadev.social_network.domain.model.Post;
+import com.dnsouzadev.social_network.domain.model.User;
 import com.dnsouzadev.social_network.repository.FriendshipRepository;
 import com.dnsouzadev.social_network.repository.LikeRepository;
 import com.dnsouzadev.social_network.repository.PostRepository;

@@ -1,10 +1,10 @@
 package com.dnsouzadev.social_network.service;
 
 import com.dnsouzadev.social_network.dto.FriendRequestResponseDto;
-import com.dnsouzadev.social_network.model.FriendRequest;
-import com.dnsouzadev.social_network.model.FriendRequestStatus;
-import com.dnsouzadev.social_network.model.Friendship;
-import com.dnsouzadev.social_network.model.User;
+import com.dnsouzadev.social_network.domain.model.FriendRequest;
+import com.dnsouzadev.social_network.domain.enums.FriendRequestStatus;
+import com.dnsouzadev.social_network.domain.model.Friendship;
+import com.dnsouzadev.social_network.domain.model.User;
 import com.dnsouzadev.social_network.repository.FriendRequestRepository;
 import com.dnsouzadev.social_network.repository.FriendshipRepository;
 import com.dnsouzadev.social_network.repository.UserRepository;

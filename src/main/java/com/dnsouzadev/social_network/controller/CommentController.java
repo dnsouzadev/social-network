@@ -1,7 +1,7 @@
 package com.dnsouzadev.social_network.controller;
 
 import com.dnsouzadev.social_network.dto.CreateCommentDto;
-import com.dnsouzadev.social_network.helper.GetUserByJwt;
+import com.dnsouzadev.social_network.helper.JwtUtil;
 import com.dnsouzadev.social_network.service.CommentService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,20 +15,20 @@ public class CommentController {
     private CommentService commentService;
 
     @Autowired
-    private GetUserByJwt getUserByJwt;
+    private JwtUtil jwtUtil;
 
     @PostMapping
     public void createComment(HttpServletRequest request, @RequestBody CreateCommentDto comment) {
-        commentService.createComment(getUserByJwt.getUser(request), comment);
+        commentService.createComment(jwtUtil.getUsername(request), comment);
     }
 
     @PutMapping("/update/{commentId}")
     public void updateComment(HttpServletRequest request, @RequestBody CreateCommentDto comment, @PathVariable Long commentId) {
-        commentService.updateComment(getUserByJwt.getUser(request), comment, commentId);
+        commentService.updateComment(jwtUtil.getUsername(request), comment, commentId);
     }
 
     @DeleteMapping("/{commentId}")
     public void deleteComment(HttpServletRequest request, @PathVariable Long commentId) {
-        commentService.deleteComment(getUserByJwt.getUser(request), commentId);
+        commentService.deleteComment(jwtUtil.getUsername(request), commentId);
     }
 }

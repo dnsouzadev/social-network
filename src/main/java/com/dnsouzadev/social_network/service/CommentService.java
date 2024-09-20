@@ -1,9 +1,9 @@
 package com.dnsouzadev.social_network.service;
 
 import com.dnsouzadev.social_network.dto.CreateCommentDto;
-import com.dnsouzadev.social_network.model.Comment;
-import com.dnsouzadev.social_network.model.Post;
-import com.dnsouzadev.social_network.model.User;
+import com.dnsouzadev.social_network.domain.model.Comment;
+import com.dnsouzadev.social_network.domain.model.Post;
+import com.dnsouzadev.social_network.domain.model.User;
 import com.dnsouzadev.social_network.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

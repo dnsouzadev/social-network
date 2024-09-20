@@ -5,8 +5,8 @@ import com.dnsouzadev.social_network.dto.UserLoginDto;
 import com.dnsouzadev.social_network.dto.UserResponseDto;
 import com.dnsouzadev.social_network.exception.CadastroException;
 import com.dnsouzadev.social_network.exception.LoginException;
-import com.dnsouzadev.social_network.model.TYPE_ACOOUNT;
-import com.dnsouzadev.social_network.model.User;
+import com.dnsouzadev.social_network.domain.enums.TypeAccount;
+import com.dnsouzadev.social_network.domain.model.User;
 import com.dnsouzadev.social_network.repository.UserRepository;
 import com.dnsouzadev.social_network.security.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,7 +71,7 @@ public class UserService {
     public void change(Long id) {
         try {
             User user = userRepository.findById(id).orElseThrow();
-            user.changeTypeAccount(user.getTypeAccount() == TYPE_ACOOUNT.PUBLIC ? TYPE_ACOOUNT.HIDDEN : TYPE_ACOOUNT.PUBLIC);
+            user.changeTypeAccount(user.getTypeAccount() == TypeAccount.PUBLIC ? TypeAccount.HIDDEN : TypeAccount.PUBLIC);
             userRepository.save(user);
         } catch (Exception e) {
             throw new RuntimeException();
@@ -81,7 +81,7 @@ public class UserService {
     @Transactional(readOnly = true)
     public List<UserResponseDto> findAllPublicUsers() {
         try {
-            List<User> users = userRepository.findAllByTypeAccount(TYPE_ACOOUNT.PUBLIC);
+            List<User> users = userRepository.findAllByTypeAccount(TypeAccount.PUBLIC);
             return users.stream().map(user -> new UserResponseDto(user.getId(), user.getFirstName(), user.getLastName(), user.getUsername(), user.getTypeAccount())).collect(Collectors.toList());
         } catch (Exception e) {
             throw new RuntimeException();

@@ -8,13 +8,14 @@ import com.dnsouzadev.social_network.domain.model.Post;
 import com.dnsouzadev.social_network.domain.model.User;
 import com.dnsouzadev.social_network.helper.Mapper;
 import com.dnsouzadev.social_network.repository.PostRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
 @Service
+@Transactional
 public class PostService {
 
     @Autowired
@@ -29,19 +30,16 @@ public class PostService {
     @Autowired
     private FriendshipUtil friendshipUtil;
 
-    @Transactional(readOnly = true)
     public Post findById(Long id) {
         return postRepository.findById(id).orElseThrow();
     }
 
-    @Transactional
     public void createPost(String username, CreatePostDto content) {
         User user = userService.findByUsername(username);
         Post post = new Post(content.content(), user);
         postRepository.save(post);
     }
 
-    @Transactional(readOnly = true)
     public List<PostDto> listPostsByUser(User user) {
         List<Post> listPosts = postRepository.findByUser(user);
         List<PostDto> listPostDto = new ArrayList<>();
@@ -51,7 +49,6 @@ public class PostService {
         return listPostDto;
     }
 
-    @Transactional
     public void deletePost(String username, Long id) {
         User user = userService.findByUsername(username);
         postRepository.findPostById(id)
@@ -66,7 +63,6 @@ public class PostService {
                 });
     }
 
-    @Transactional(readOnly = true)
     public PostDto getPost(String username, Long id) {
         User user = userService.findByUsername(username);
         Post post = postRepository.findPostById(id)
@@ -83,7 +79,6 @@ public class PostService {
         }
     }
 
-    @Transactional
     public void updatePost(String username, Long id, CreatePostDto content) {
         User user = userService.findByUsername(username);
         postRepository.findPostById(id)

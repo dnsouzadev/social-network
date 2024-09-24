@@ -7,6 +7,7 @@ import com.dnsouzadev.social_network.domain.model.Friendship;
 import com.dnsouzadev.social_network.domain.model.User;
 import com.dnsouzadev.social_network.helper.Mapper;
 import com.dnsouzadev.social_network.repository.FriendRequestRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class FriendRequestService {
 
     @Autowired

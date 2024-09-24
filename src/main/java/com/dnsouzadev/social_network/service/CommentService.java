@@ -5,10 +5,12 @@ import com.dnsouzadev.social_network.domain.model.Comment;
 import com.dnsouzadev.social_network.domain.model.Post;
 import com.dnsouzadev.social_network.domain.model.User;
 import com.dnsouzadev.social_network.repository.*;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@Transactional
 public class CommentService {
 
     @Autowired

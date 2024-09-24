@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface FriendRequestRepository extends JpaRepository<FriendRequest, Long> {
 
-    Optional<FriendRequest> findBySenderAndReceiverAndStatus(User sender, User receiver, FriendRequestStatus status);
+    Optional<FriendRequest> findBySenderAndReceiver(User sender, User receiver);
 
     @Query("SELECT fr FROM FriendRequest fr WHERE fr.receiver = ?1 AND fr.status = 'PENDING'")
     List<FriendRequest> getFriendRequests(User user);

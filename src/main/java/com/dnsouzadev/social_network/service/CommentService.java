@@ -15,28 +15,30 @@ public class CommentService {
     private CommentRepository commentRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Autowired
-    private FriendshipRepository friendshipRepository;
+    private PostService postService;
 
     @Autowired
-    private PostRepository postRepository;
+    private FriendshipService friendshipService;
 
     public void createComment(String username, CreateCommentDto comment) {
 
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        Post post = postRepository.findById(comment.postId())
-                .orElseThrow(() -> new RuntimeException("Post not found"));
+        User user = userService.findByUsername(username);
+        Post post = postService.findById(comment.postId());
 
-        boolean isPrivateUser = userRepository.existsByUsernameAndIsHidden(username);
-        boolean isFriend = friendshipRepository.existsByUsernameAndFriend(username, post.getUser().getUsername());
+        boolean isPrivateUser = userService.existsByUsernameAndIsHidden(username);
+        boolean isFriend = friendshipService.existsByUsernameAndFriend(username, post.getUser().getUsername());
 
         if (isPrivateUser && !isFriend)
             throw new RuntimeException("you are not allowed to comment this post");
 
-        commentRepository.save(new Comment(user, post, comment.comment()));
+        commentRepository.save(createComment(user, post, comment));
+    }
+
+    private Comment createComment(User user, Post post, CreateCommentDto comment) {
+        return new Comment(user, post, comment.comment());
     }
     
     public void updateComment(String username, CreateCommentDto comment, Long commentId) {
@@ -47,7 +49,6 @@ public class CommentService {
         if (commentToUpdate.getUser().getUsername().equals(username)) {
             commentToUpdate.setContent(comment.comment());
             commentRepository.save(commentToUpdate);
-            return;
         } else {
             throw new RuntimeException("you are not allowed to update this comment");
         }
@@ -59,14 +60,16 @@ public class CommentService {
                 .orElseThrow(() -> new RuntimeException("Comment not found"));
 
         if (comment.getUser().getUsername().equals(username)) {
-            commentRepository.deleteById(commentId);
-            return;
+            deleteCommentById(commentId);
         } else if (comment.getPost().getUser().getUsername().equals(username)) {
-            commentRepository.deleteById(commentId);
-            return;
+            deleteCommentById(commentId);
         } else {
             throw new RuntimeException("you are not allowed to delete this comment");
         }
+    }
+
+    private void deleteCommentById(Long commentId) {
+        commentRepository.deleteById(commentId);
     }
 
 }

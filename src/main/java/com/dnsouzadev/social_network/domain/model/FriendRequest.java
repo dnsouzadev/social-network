@@ -33,6 +33,12 @@ public class FriendRequest {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
 
+    public FriendRequest(User sender, User receiver) {
+        this.sender = sender;
+        this.receiver = receiver;
+        this.createdAt = new Date();
+        this.status = FriendRequestStatus.PENDING;
+    }
 
     public FriendRequest() {
         this.createdAt = new Date();

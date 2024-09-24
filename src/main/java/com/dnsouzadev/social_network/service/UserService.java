@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,8 +47,8 @@ public class UserService {
     @Transactional
     public void signup(UserDetailsDto userDto) {
         try {
-            boolean userExists = userRepository.existsUserByUsername(userDto.username());
-            if (userExists) throw new CadastroException("User already exists");
+            User userExist = findByUsername(userDto.username());
+            if (userExist != null) throw new CadastroException("Usuario ja cadastrado");
 
             User user = createUser(userDto);
             saveUser(user);
@@ -58,6 +57,7 @@ public class UserService {
         }
     }
 
+    @Transactional
     public String login(UserLoginDto dto) {
         if (dto.password() == null) throw new LoginException("Senha invalida");
 
@@ -99,17 +99,8 @@ public class UserService {
         }
     }
 
-    @Transactional(readOnly = true)
-    public UserResponseDto getProfile(String username) {
-        try {
-            User user = userRepository.findByUsername(username).orElseThrow();
-            return mapper.toUserResponseDto(user);
-        } catch (Exception e) {
-            throw new RuntimeException();
-        }
-    }
-
-    private User createUser(UserDetailsDto userDto) {
+    @Transactional
+    public User createUser(UserDetailsDto userDto) {
         return new User(userDto.firstName(), userDto.lastName(), userDto.username(), userDto.password());
     }
 

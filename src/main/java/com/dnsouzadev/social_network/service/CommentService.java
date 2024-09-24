@@ -15,19 +15,10 @@ public class CommentService {
     private CommentRepository commentRepository;
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
     private UserService userService;
 
     @Autowired
-    private FriendshipRepository friendshipRepository;
-
-    @Autowired
     private PostService postService;
-
-    @Autowired
-    private PostRepository postRepository;
 
     @Autowired
     private FriendshipService friendshipService;

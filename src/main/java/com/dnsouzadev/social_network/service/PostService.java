@@ -1,21 +1,18 @@
 package com.dnsouzadev.social_network.service;
 
-import com.dnsouzadev.social_network.dto.CommentDto;
+import com.dnsouzadev.social_network.domain.enums.TypeAccount;
 import com.dnsouzadev.social_network.dto.CreatePostDto;
-import com.dnsouzadev.social_network.dto.LikeDto;
 import com.dnsouzadev.social_network.dto.PostDto;
 import com.dnsouzadev.social_network.helper.FriendshipUtil;
-import com.dnsouzadev.social_network.domain.model.Comment;
-import com.dnsouzadev.social_network.domain.model.Like;
 import com.dnsouzadev.social_network.domain.model.Post;
 import com.dnsouzadev.social_network.domain.model.User;
+import com.dnsouzadev.social_network.helper.Mapper;
 import com.dnsouzadev.social_network.repository.PostRepository;
-import com.dnsouzadev.social_network.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class PostService {
@@ -24,39 +21,39 @@ public class PostService {
     private PostRepository postRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
+
+    @Autowired
+    private Mapper mapper;
 
     @Autowired
     private FriendshipUtil friendshipUtil;
 
+    @Transactional(readOnly = true)
     public Post findById(Long id) {
         return postRepository.findById(id).orElseThrow();
     }
 
+    @Transactional
     public void createPost(String username, CreatePostDto content) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
+        User user = userService.findByUsername(username);
         Post post = new Post(content.content(), user);
         postRepository.save(post);
     }
 
+    @Transactional(readOnly = true)
     public List<PostDto> listPostsByUser(User user) {
         List<Post> listPosts = postRepository.findByUser(user);
         List<PostDto> listPostDto = new ArrayList<>();
         for (Post post : listPosts) {
-            listPostDto.add(convertToDto(post));
+            listPostDto.add(mapper.toPostDto(post));
         }
         return listPostDto;
     }
 
-    public List<Post> listAllPosts() {
-        return postRepository.findAll();
-    }
-
+    @Transactional
     public void deletePost(String username, Long id) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userService.findByUsername(username);
         postRepository.findPostById(id)
                 .ifPresentOrElse(post -> {
                     if (post.getUser().equals(user)) {
@@ -69,26 +66,26 @@ public class PostService {
                 });
     }
 
+    @Transactional(readOnly = true)
     public PostDto getPost(String username, Long id) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userService.findByUsername(username);
         Post post = postRepository.findPostById(id)
                 .orElseThrow(() -> new RuntimeException("Post not found"));
 
-        if (post.getUser().getTypeAccount().equals("PUBLIC")) {
-            return convertToDto(post);
+        if (post.getUser().getTypeAccount().equals(TypeAccount.PUBLIC)) {
+            return mapper.toPostDto(post);
         } else if (friendshipUtil != null && friendshipUtil.checkFriendship(username, post.getUser().getUsername())) {
-            return convertToDto(post);
+            return mapper.toPostDto(post);
         } else if (post.getUser().equals(user)) {
-            return convertToDto(post);
+            return mapper.toPostDto(post);
         } else {
             throw new RuntimeException("User not allowed to get this post");
         }
     }
 
+    @Transactional
     public void updatePost(String username, Long id, CreatePostDto content) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userService.findByUsername(username);
         postRepository.findPostById(id)
                 .ifPresentOrElse(post -> {
                     if (post.getUser().equals(user)) {
@@ -100,17 +97,5 @@ public class PostService {
                 }, () -> {
                     throw new RuntimeException("Post not found");
                 });
-    }
-
-    private PostDto convertToDto(Post post) {
-        return new PostDto(post.getId(), post.getUser().getUsername(), post.getContent(), convertToLikeDto(post.getLikes()), convertToCommentDto(post.getComments()), post.getCreatedAt());
-    }
-
-    private Set<LikeDto> convertToLikeDto(Set<Like> likes) {
-        return likes.stream().map(like -> new LikeDto(like.getUser().getUsername())).collect(Collectors.toSet());
-    }
-
-    private Set<CommentDto> convertToCommentDto(Set<Comment> comments) {
-        return comments.stream().map(c -> new CommentDto(c.getId(), c.getUser().getFirstName(), c.getUser().getLastName(), c.getUser().getUsername(), c.getContent(), c.getCreatedAt())).collect(Collectors.toSet());
     }
 }

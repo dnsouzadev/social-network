@@ -3,10 +3,7 @@ package com.dnsouzadev.social_network.service;
 import com.dnsouzadev.social_network.domain.model.Like;
 import com.dnsouzadev.social_network.domain.model.Post;
 import com.dnsouzadev.social_network.domain.model.User;
-import com.dnsouzadev.social_network.repository.FriendshipRepository;
 import com.dnsouzadev.social_network.repository.LikeRepository;
-import com.dnsouzadev.social_network.repository.PostRepository;
-import com.dnsouzadev.social_network.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,16 +41,13 @@ public class LikeService {
     }
 
     private boolean canLike(User user, Post post) {
-        boolean isPrivateUser = userService.existsByUsernameAndIsHidden(user.getUsername());
+        boolean isPrivateUser = userService.existsByUsernameAndIsHidden(post.getUser().getUsername());
         boolean isFriend = friendshipService.existsByUsernameAndFriend(user.getUsername(), post.getUser().getUsername());
 
-        if (isPrivateUser && !isFriend)
-            return false;
-
-        return true;
+        return !isPrivateUser || isFriend;
     }
 
-    private Like likePost(User user, Post post) {
-        return new Like(user, post);
+    private void likePost(User user, Post post) {
+        new Like(user, post);
     }
 }

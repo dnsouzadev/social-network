@@ -7,8 +7,6 @@ import com.dnsouzadev.social_network.domain.model.Friendship;
 import com.dnsouzadev.social_network.domain.model.User;
 import com.dnsouzadev.social_network.helper.Mapper;
 import com.dnsouzadev.social_network.repository.FriendRequestRepository;
-import com.dnsouzadev.social_network.repository.FriendshipRepository;
-import com.dnsouzadev.social_network.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,13 +20,7 @@ public class FriendRequestService {
     private FriendRequestRepository friendRequestRepository;
 
     @Autowired
-    private FriendshipRepository friendshipRepository;
-
-    @Autowired
     private FriendshipService friendshipService;
-
-    @Autowired
-    private UserRepository userRepository;
 
     @Autowired
     private UserService userService;
@@ -113,6 +105,9 @@ public class FriendRequestService {
 
     public void deleteFriendRequestBySenderAndReceiver(User sender, User receiver) {
         var friendrequest = friendRequestRepository.findBySenderAndReceiver(sender, receiver);
+
+        if (friendrequest.isEmpty()) throw new RuntimeException("Friend request not found");
+
         friendRequestRepository.delete(friendrequest.get());
 
     }

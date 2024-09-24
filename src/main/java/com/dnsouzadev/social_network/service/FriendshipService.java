@@ -5,6 +5,7 @@ import com.dnsouzadev.social_network.domain.model.Friendship;
 import com.dnsouzadev.social_network.domain.model.User;
 import com.dnsouzadev.social_network.helper.Mapper;
 import com.dnsouzadev.social_network.repository.FriendshipRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 public class FriendshipService {
 
     @Autowired
@@ -19,9 +21,6 @@ public class FriendshipService {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private FriendRequestService friendRequestService;
 
     @Autowired
     private Mapper mapper;
@@ -32,7 +31,6 @@ public class FriendshipService {
 
     public void createFriendship(User sender, User receiver) {
         friendshipRepository.save(new Friendship(sender, receiver));
-        friendRequestService.deleteFriendRequestBySenderAndReceiver(sender, receiver);
     }
 
     public List<UserResponseDto> listFriends(String username) {
@@ -58,7 +56,6 @@ public class FriendshipService {
 
         if (friendshipExists != null) {
             friendshipRepository.delete(friendshipExists);
-            friendRequestService.deleteFriendRequestBySenderAndReceiver(user1, user2);
         } else
             throw new RuntimeException("Friendship does not exist");
 

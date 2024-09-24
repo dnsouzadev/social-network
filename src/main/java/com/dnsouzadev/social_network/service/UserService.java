@@ -10,14 +10,15 @@ import com.dnsouzadev.social_network.domain.model.User;
 import com.dnsouzadev.social_network.helper.Mapper;
 import com.dnsouzadev.social_network.repository.UserRepository;
 import com.dnsouzadev.social_network.security.TokenService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class UserService {
 
     @Autowired
@@ -29,22 +30,18 @@ public class UserService {
     @Autowired
     private Mapper mapper;
 
-    @Transactional(readOnly = true)
     public User findByUsername(String username) {
         return userRepository.findByUsername(username).orElseThrow();
     }
 
-    @Transactional(readOnly = true)
     public boolean existsByUsernameAndIsHidden(String username) {
         return userRepository.existsByUsernameAndIsHidden(username);
     }
 
-    @Transactional
     public void saveUser(User user) {
         userRepository.save(user);
     }
 
-    @Transactional
     public void signup(UserDetailsDto userDto) {
         try {
             User userExist = findByUsername(userDto.username());
@@ -57,7 +54,6 @@ public class UserService {
         }
     }
 
-    @Transactional
     public String login(UserLoginDto dto) {
         if (dto.password() == null) throw new LoginException("Senha invalida");
 
@@ -68,7 +64,6 @@ public class UserService {
         return tokenService.generateToken(user);
     }
 
-    @Transactional(readOnly = true)
     public List<UserResponseDto> findAll() {
         try {
             List<User> users = userRepository.findAll();
@@ -78,7 +73,6 @@ public class UserService {
         }
     }
 
-    @Transactional
     public void change(Long id) {
         try {
             User user = userRepository.findById(id).orElseThrow();
@@ -89,7 +83,6 @@ public class UserService {
         }
     }
 
-    @Transactional(readOnly = true)
     public List<UserResponseDto> findAllPublicUsers() {
         try {
             List<User> users = userRepository.findAllByTypeAccount(TypeAccount.PUBLIC);
@@ -99,7 +92,6 @@ public class UserService {
         }
     }
 
-    @Transactional
     public User createUser(UserDetailsDto userDto) {
         return new User(userDto.firstName(), userDto.lastName(), userDto.username(), userDto.password());
     }

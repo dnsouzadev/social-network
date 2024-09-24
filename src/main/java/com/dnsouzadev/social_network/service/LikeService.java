@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@Transactional
 public class LikeService {
 
     @Autowired
@@ -23,7 +24,6 @@ public class LikeService {
     @Autowired
     private FriendshipService friendshipService;
 
-    @Transactional
     public void likePost(String username, Long postId) {
         User user = userService.findByUsername(username);
         Post post = postService.findById(postId);

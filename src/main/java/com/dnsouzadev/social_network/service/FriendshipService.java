@@ -23,9 +23,6 @@ public class FriendshipService {
     private UserService userService;
 
     @Autowired
-    private FriendRequestService friendRequestService;
-
-    @Autowired
     private Mapper mapper;
 
     public boolean existsByUsernameAndFriend(String username, String friend) {
@@ -34,7 +31,6 @@ public class FriendshipService {
 
     public void createFriendship(User sender, User receiver) {
         friendshipRepository.save(new Friendship(sender, receiver));
-        friendRequestService.deleteFriendRequestBySenderAndReceiver(sender, receiver);
     }
 
     public List<UserResponseDto> listFriends(String username) {
@@ -60,7 +56,6 @@ public class FriendshipService {
 
         if (friendshipExists != null) {
             friendshipRepository.delete(friendshipExists);
-            friendRequestService.deleteFriendRequestBySenderAndReceiver(user1, user2);
         } else
             throw new RuntimeException("Friendship does not exist");
 

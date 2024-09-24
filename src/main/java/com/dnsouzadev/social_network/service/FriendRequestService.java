@@ -5,6 +5,7 @@ import com.dnsouzadev.social_network.domain.model.FriendRequest;
 import com.dnsouzadev.social_network.domain.enums.FriendRequestStatus;
 import com.dnsouzadev.social_network.domain.model.Friendship;
 import com.dnsouzadev.social_network.domain.model.User;
+import com.dnsouzadev.social_network.helper.Mapper;
 import com.dnsouzadev.social_network.repository.FriendRequestRepository;
 import com.dnsouzadev.social_network.repository.FriendshipRepository;
 import com.dnsouzadev.social_network.repository.UserRepository;
@@ -24,51 +25,60 @@ public class FriendRequestService {
     private FriendshipRepository friendshipRepository;
 
     @Autowired
+    private FriendshipService friendshipService;
+
+    @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private Mapper mapper;
+
+
     public void sendFriendRequest(String senderUsername, String receiverUsername) {
-        User sender = userRepository.findByUsername(senderUsername).orElseThrow(() -> new RuntimeException("Sender not found"));
-        User receiver = userRepository.findByUsername(receiverUsername).orElseThrow(() -> new RuntimeException("Receiver not found"));
-        User receiverTypeAccount = userRepository.findByUsername(receiverUsername).orElseThrow(() -> new RuntimeException("Receiver not found"));
-        String typeAccountReceiver = String.valueOf(receiverTypeAccount.getTypeAccount());
+        User sender = userService.findByUsername(senderUsername);
+        User receiver = userService.findByUsername(receiverUsername);
+        String typeAccountReceiver = String.valueOf(receiver.getTypeAccount());
+
+        Friendship friendship = friendshipService.checkFriendship(sender, receiver);
+
+        if (friendship != null) throw new RuntimeException("You are already friends");
+
+        if (sender.equals(receiver)) throw new RuntimeException("You can't send a friend request to yourself");
+
+        if (typeAccountReceiver.equals("HIDDEN")) throw new RuntimeException("You can't send a friend request to this user");
 
         Optional<FriendRequest> existingRequest = friendRequestRepository
-                .findBySenderAndReceiverAndStatus(sender, receiver, FriendRequestStatus.PENDING);
+                .findBySenderAndReceiver(sender, receiver);
 
-        Optional<FriendRequest> alreadyFriends = friendRequestRepository
-                .findBySenderAndReceiverAndStatus(sender, receiver, FriendRequestStatus.ACCEPTED);
-
-        if (existingRequest.isPresent()) throw new RuntimeException("Friend request already sent");
-        if (alreadyFriends.isPresent()) throw new RuntimeException("Users are already friends");
-        if (sender.equals(receiver)) throw new RuntimeException("You can't send a friend request to yourself");
-        if (typeAccountReceiver.equals("HIDDEN"))
-            throw new RuntimeException("You can't send a friend request to this user");
-
-        FriendRequest friendRequest = new FriendRequest();
-        friendRequest.setSender(sender);
-        friendRequest.setReceiver(receiver);
-
-        friendRequestRepository.save(friendRequest);
+        if (existingRequest.isPresent()) {
+            FriendRequestStatus status = existingRequest.get().getStatus();
+            switch (status) {
+                case ACCEPTED:
+                    throw new RuntimeException("Friend request already accepted");
+                case REJECTED:
+                    throw new RuntimeException("Friend request already rejected");
+                case PENDING:
+                    throw new RuntimeException("Friend request already sent");
+            }
+        }
+        createFriendRequest(sender, receiver);
     }
 
     public List<FriendRequestResponseDto> getFriendRequests(String username) {
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userService.findByUsername(username);
 
-        var fr = friendRequestRepository.getFriendRequests(user);
+        List<FriendRequest> fr = friendRequestRepository.getFriendRequests(user);
 
         return fr.stream()
-                .map(friendRequest -> new FriendRequestResponseDto(
-                        friendRequest.getId(),
-                        friendRequest.getSender().getUsername(),
-                        friendRequest.getReceiver().getUsername(),
-                        friendRequest.getStatus().name()
-                ))
+                .map(friendRequest -> mapper.toFriendRequestResponseDto(friendRequest))
                 .toList();
     }
 
     public void acceptFriendRequest(Long id, String username) {
-        FriendRequest friendRequest = friendRequestRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Friend request not found"));
+        FriendRequest friendRequest = getFriendRequest(id);
 
         boolean isReceiver = friendRequest.getReceiver().getUsername().equals(username);
 
@@ -77,15 +87,11 @@ public class FriendRequestService {
         friendRequest.accept();
         friendRequestRepository.save(friendRequest);
 
-        Friendship friendship = new Friendship();
-        friendship.setUser1(friendRequest.getSender());
-        friendship.setUser2(friendRequest.getReceiver());
-        friendshipRepository.save(friendship);
+        friendshipService.createFriendship(friendRequest.getSender(), friendRequest.getReceiver());
     }
 
     public void rejectFriendRequest(Long id, String username) {
-        FriendRequest friendRequest = friendRequestRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Friend request not found"));
+        FriendRequest friendRequest = getFriendRequest(id);
 
         boolean isReceiver = friendRequest.getReceiver().getUsername().equals(username);
 
@@ -95,9 +101,23 @@ public class FriendRequestService {
     }
 
     private void deleteFriendRequest(Long id) {
-        FriendRequest friendRequest = friendRequestRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Friend request not found"));
+        FriendRequest friendRequest = getFriendRequest(id);
 
         friendRequestRepository.delete(friendRequest);
+    }
+
+    private FriendRequest getFriendRequest(Long id) {
+        return friendRequestRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Friend request not found"));
+    }
+
+    public void deleteFriendRequestBySenderAndReceiver(User sender, User receiver) {
+        var friendrequest = friendRequestRepository.findBySenderAndReceiver(sender, receiver);
+        friendRequestRepository.delete(friendrequest.get());
+
+    }
+
+    private void createFriendRequest(User sender, User receiver) {
+        friendRequestRepository.save(new FriendRequest(sender, receiver));
     }
 }

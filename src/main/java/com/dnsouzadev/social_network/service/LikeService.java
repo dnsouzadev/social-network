@@ -18,31 +18,42 @@ public class LikeService {
     private LikeRepository likeRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Autowired
-    private FriendshipRepository friendshipRepository;
+    private PostService postService;
 
     @Autowired
-    private PostRepository postRepository;
+    private FriendshipService friendshipService;
 
     @Transactional
     public void likePost(String username, Long postId) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new RuntimeException("Post not found"));
+        User user = userService.findByUsername(username);
+        Post post = postService.findById(postId);
+
+        boolean canLikePost = canLike(user, post);
+
+        if (!canLikePost) throw new RuntimeException("you are not allowed to like this post");
 
         boolean isLiked = likeRepository.existsByUserAndPost(user, post);
-        boolean isPrivateUser = userRepository.existsByUsernameAndIsHidden(username);
-        boolean isFriend = friendshipRepository.existsByUsernameAndFriend(username, post.getUser().getUsername());
-
-        if (isPrivateUser && !isFriend)
-            throw new RuntimeException("you are not allowed to like this post");
 
         if (isLiked)
             likeRepository.deleteLikeByPostId(postId);
         else
-            likeRepository.save(new Like(user, post));
+            likePost(user, post);
+    }
+
+    private boolean canLike(User user, Post post) {
+        boolean isPrivateUser = userService.existsByUsernameAndIsHidden(user.getUsername());
+        boolean isFriend = friendshipService.existsByUsernameAndFriend(user.getUsername(), post.getUser().getUsername());
+
+        if (isPrivateUser && !isFriend)
+            return false;
+
+        return true;
+    }
+
+    private Like likePost(User user, Post post) {
+        return new Like(user, post);
     }
 }

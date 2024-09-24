@@ -3,6 +3,7 @@ package com.dnsouzadev.social_network.service;
 import com.dnsouzadev.social_network.dto.UserResponseDto;
 import com.dnsouzadev.social_network.domain.model.Friendship;
 import com.dnsouzadev.social_network.domain.model.User;
+import com.dnsouzadev.social_network.helper.Mapper;
 import com.dnsouzadev.social_network.repository.FriendshipRepository;
 import com.dnsouzadev.social_network.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,38 +21,63 @@ public class FriendshipService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private FriendRequestService friendRequestService;
+
+    @Autowired
+    private Mapper mapper;
+
+    public boolean existsByUsernameAndFriend(String username, String friend) {
+        return friendshipRepository.existsByUsernameAndFriend(username, friend);
+    }
+
+    public void createFriendship(User sender, User receiver) {
+        friendshipRepository.save(new Friendship(sender, receiver));
+        friendRequestService.deleteFriendRequestBySenderAndReceiver(sender, receiver);
+    }
+
     public List<UserResponseDto> listFriends(String username) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userService.findByUsername(username);
 
         List<Friendship> friendships = friendshipRepository.findByUser1OrUser2(user, user);
 
         List<UserResponseDto> friends = new ArrayList<>();
         for (Friendship friendship : friendships) {
-            if (friendship.getUser1().equals(user)) {
-                friends.add(new UserResponseDto(friendship.getUser2().getId(), friendship.getUser2().getFirstName(), friendship.getUser2().getLastName(), friendship.getUser2().getUsername(), friendship.getUser2().getTypeAccount()));
-            } else {
-                friends.add(new UserResponseDto(friendship.getUser1().getId(), friendship.getUser1().getFirstName(), friendship.getUser1().getLastName(),friendship.getUser1().getUsername(), friendship.getUser1().getTypeAccount()));
-            }
+            User friend = friendship.getUser1().equals(user) ? friendship.getUser2() : friendship.getUser1();
+            friends.add(mapper.toUserResponseDto(friend));
         }
 
         return friends;
     }
 
     public void deleteFriendship(String sender, String receiver) {
-        User user1 = userRepository.findByUsername(sender)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        User user1 = userService.findByUsername(sender);
 
-        User user2 = userRepository.findByUsername(receiver)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        User user2 = userService.findByUsername(receiver);
 
-        List<Friendship> friendships = friendshipRepository.findByUser1OrUser2(user1, user2);
+        Friendship friendshipExists = checkFriendship(user1, user2);
+
+        if (friendshipExists != null) {
+            friendshipRepository.delete(friendshipExists);
+            friendRequestService.deleteFriendRequestBySenderAndReceiver(user1, user2);
+        } else
+            throw new RuntimeException("Friendship does not exist");
+
+    }
+
+    public Friendship checkFriendship(User sender, User receiver) {
+
+        List<Friendship> friendships = friendshipRepository.findByUser1OrUser2(sender, receiver);
         for (Friendship friendship : friendships) {
-            if (friendship.getUser1().equals(user1) && friendship.getUser2().equals(user2) ||
-                    friendship.getUser1().equals(user2) && friendship.getUser2().equals(user1)) {
-                friendshipRepository.delete(friendship);
+            if (friendship.getUser1().equals(sender) && friendship.getUser2().equals(receiver) ||
+                    friendship.getUser1().equals(receiver) && friendship.getUser2().equals(sender)) {
+                return friendship;
             }
         }
+        return null;
     }
 }
 

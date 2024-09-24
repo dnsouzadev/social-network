@@ -7,6 +7,7 @@ import com.dnsouzadev.social_network.exception.CadastroException;
 import com.dnsouzadev.social_network.exception.LoginException;
 import com.dnsouzadev.social_network.domain.enums.TypeAccount;
 import com.dnsouzadev.social_network.domain.model.User;
+import com.dnsouzadev.social_network.helper.Mapper;
 import com.dnsouzadev.social_network.repository.UserRepository;
 import com.dnsouzadev.social_network.security.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +27,23 @@ public class UserService {
     @Autowired
     private TokenService tokenService;
 
+    @Autowired
+    private Mapper mapper;
+
     @Transactional(readOnly = true)
     public User findByUsername(String username) {
         return userRepository.findByUsername(username).orElseThrow();
     }
 
+    @Transactional(readOnly = true)
+    public boolean existsByUsernameAndIsHidden(String username) {
+        return userRepository.existsByUsernameAndIsHidden(username);
+    }
+
+    @Transactional
+    public void saveUser(User user) {
+        userRepository.save(user);
+    }
 
     @Transactional
     public void signup(UserDetailsDto userDto) {
@@ -38,8 +51,8 @@ public class UserService {
             boolean userExists = userRepository.existsUserByUsername(userDto.username());
             if (userExists) throw new CadastroException("User already exists");
 
-            User user = new User(userDto.firstName(), userDto.lastName(), userDto.username(), userDto.password());
-            userRepository.save(user);
+            User user = createUser(userDto);
+            saveUser(user);
         } catch (Exception e) {
             throw new CadastroException(e.getMessage());
         }
@@ -48,20 +61,18 @@ public class UserService {
     public String login(UserLoginDto dto) {
         if (dto.password() == null) throw new LoginException("Senha invalida");
 
-        Optional<User> user = userRepository.findByUsername(dto.username());
-        if (user.isEmpty()) throw new LoginException("Usuario nao existe");
+        User user = findByUsername(dto.username());
 
-        if (!user.get().getPassword().equals(dto.password())) throw new LoginException("Senha invalida");
+        if (!user.getPassword().equals(dto.password())) throw new LoginException("Senha invalida");
 
-        User usuario = user.get();
-        return tokenService.generateToken(usuario);
+        return tokenService.generateToken(user);
     }
 
     @Transactional(readOnly = true)
     public List<UserResponseDto> findAll() {
         try {
             List<User> users = userRepository.findAll();
-            return users.stream().map(user -> new UserResponseDto(user.getId(), user.getFirstName(), user.getLastName(), user.getUsername(), user.getTypeAccount())).collect(Collectors.toList());
+            return users.stream().map(user -> mapper.toUserResponseDto(user)).collect(Collectors.toList());
         } catch (Exception e) {
             throw new RuntimeException();
         }
@@ -82,7 +93,7 @@ public class UserService {
     public List<UserResponseDto> findAllPublicUsers() {
         try {
             List<User> users = userRepository.findAllByTypeAccount(TypeAccount.PUBLIC);
-            return users.stream().map(user -> new UserResponseDto(user.getId(), user.getFirstName(), user.getLastName(), user.getUsername(), user.getTypeAccount())).collect(Collectors.toList());
+            return users.stream().map(user -> mapper.toUserResponseDto(user)).collect(Collectors.toList());
         } catch (Exception e) {
             throw new RuntimeException();
         }
@@ -92,9 +103,14 @@ public class UserService {
     public UserResponseDto getProfile(String username) {
         try {
             User user = userRepository.findByUsername(username).orElseThrow();
-            return new UserResponseDto(user.getId(), user.getFirstName(), user.getLastName(), user.getUsername(), user.getTypeAccount());
+            return mapper.toUserResponseDto(user);
         } catch (Exception e) {
             throw new RuntimeException();
         }
     }
+
+    private User createUser(UserDetailsDto userDto) {
+        return new User(userDto.firstName(), userDto.lastName(), userDto.username(), userDto.password());
+    }
+
 }

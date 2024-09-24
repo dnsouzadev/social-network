@@ -3,6 +3,7 @@ package com.dnsouzadev.social_network.service;
 import com.dnsouzadev.social_network.dto.UserDetailsAdminDto;
 import com.dnsouzadev.social_network.exception.CadastroException;
 import com.dnsouzadev.social_network.domain.model.User;
+import com.dnsouzadev.social_network.helper.Mapper;
 import com.dnsouzadev.social_network.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,15 +12,18 @@ import org.springframework.stereotype.Service;
 public class AdminService {
 
     @Autowired
-    private UserRepository userRepository;
+    private Mapper mapper;
+
+    @Autowired
+    private UserService userService;
 
     public void signup(UserDetailsAdminDto userDto) {
         try {
-            boolean userExists = userRepository.existsUserByUsername(userDto.username());
-            if (userExists) throw new CadastroException("User already exists");
+            User userExists = userService.findByUsername(userDto.username());
+            if (userExists != null) throw new CadastroException("User already exists");
 
-            User user = new User(userDto.firstName(), userDto.lastName(), userDto.username(), userDto.password(), userDto.role());
-            userRepository.save(user);
+            User user = mapper.toUserAdmin(userDto);
+            userService.saveUser(user);
 
         } catch (Exception e) {
             throw new CadastroException(e.getMessage());

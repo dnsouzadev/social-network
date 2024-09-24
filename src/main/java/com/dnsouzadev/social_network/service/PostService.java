@@ -29,6 +29,10 @@ public class PostService {
     @Autowired
     private FriendshipUtil friendshipUtil;
 
+    public Post findById(Long id) {
+        return postRepository.findById(id).orElseThrow();
+    }
+
     public void createPost(String username, CreatePostDto content) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));

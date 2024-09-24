@@ -31,6 +31,12 @@ public class Friendship {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
 
+    public Friendship(User user1, User user2) {
+        this.user1 = user1;
+        this.user2 = user2;
+        this.createdAt = new Date();
+    }
+
     public Friendship() {
         this.createdAt = new Date();
     }

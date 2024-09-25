@@ -2,7 +2,7 @@ package com.dnsouzadev.social_network.controller;
 
 import com.dnsouzadev.social_network.dto.CreateFriendRequestDto;
 import com.dnsouzadev.social_network.helper.JwtUtil;
-import com.dnsouzadev.social_network.helper.ResponseModel;
+import com.dnsouzadev.social_network.helper.ResponseMessage;
 import com.dnsouzadev.social_network.service.FriendRequestService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,28 +19,26 @@ public class ApiController {
     @Autowired
     private JwtUtil jwtUtil;
 
-    @Autowired
-    private ResponseModel responseModel;
 
     @PostMapping("/send")
-    public ResponseEntity<String> sendFriendRequest(@RequestBody CreateFriendRequestDto friendRequestDto, HttpServletRequest request) {
+    public ResponseEntity<ResponseMessage> sendFriendRequest(@RequestBody CreateFriendRequestDto friendRequestDto, HttpServletRequest request) {
         String usernameSender = jwtUtil.getUsername(request);
         friendRequestService.sendFriendRequest(usernameSender, friendRequestDto.receiver());
-        return responseModel.sendResponse("Friend request sent successfully!");
+        return ResponseEntity.ok(new ResponseMessage("Friend request sent successfully!"));
     }
 
     @GetMapping("/accept/{id}")
-    public ResponseEntity<String> acceptFriendRequest(@PathVariable Long id, HttpServletRequest request) {
+    public ResponseEntity<ResponseMessage> acceptFriendRequest(@PathVariable Long id, HttpServletRequest request) {
         String usernameReceiver = jwtUtil.getUsername(request);
         friendRequestService.acceptFriendRequest(id, usernameReceiver);
-        return responseModel.sendResponse("Friend request accepted successfully!");
+        return ResponseEntity.ok(new ResponseMessage("Friend request accepted successfully!"));
     }
 
     @GetMapping("/reject/{id}")
-    public ResponseEntity<String> rejectFriendRequest(@PathVariable Long id, HttpServletRequest request) {
+    public ResponseEntity<ResponseMessage> rejectFriendRequest(@PathVariable Long id, HttpServletRequest request) {
         String usernameReceiver = jwtUtil.getUsername(request);
         friendRequestService.rejectFriendRequest(id,usernameReceiver);
-        return responseModel.sendResponse("Friend request rejected successfully!");
+        return ResponseEntity.ok(new ResponseMessage("Friend request rejected successfully!"));
     }
 
 }

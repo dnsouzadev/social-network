@@ -2,6 +2,7 @@ package com.dnsouzadev.social_network.controller;
 
 import com.dnsouzadev.social_network.dto.CreateFriendRequestDto;
 import com.dnsouzadev.social_network.helper.JwtUtil;
+import com.dnsouzadev.social_network.helper.ResponseModel;
 import com.dnsouzadev.social_network.service.FriendRequestService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,25 +19,28 @@ public class ApiController {
     @Autowired
     private JwtUtil jwtUtil;
 
+    @Autowired
+    private ResponseModel responseModel;
+
     @PostMapping("/send")
-    public ResponseEntity<?> sendFriendRequest(@RequestBody CreateFriendRequestDto friendRequestDto, HttpServletRequest request) {
+    public ResponseEntity<String> sendFriendRequest(@RequestBody CreateFriendRequestDto friendRequestDto, HttpServletRequest request) {
         String usernameSender = jwtUtil.getUsername(request);
         friendRequestService.sendFriendRequest(usernameSender, friendRequestDto.receiver());
-        return ResponseEntity.ok("Friend request sent successfully!");
+        return responseModel.sendResponse("Friend request sent successfully!");
     }
 
     @GetMapping("/accept/{id}")
     public ResponseEntity<String> acceptFriendRequest(@PathVariable Long id, HttpServletRequest request) {
         String usernameReceiver = jwtUtil.getUsername(request);
         friendRequestService.acceptFriendRequest(id, usernameReceiver);
-        return ResponseEntity.ok("Friend request accepted successfully!");
+        return responseModel.sendResponse("Friend request accepted successfully!");
     }
 
     @GetMapping("/reject/{id}")
     public ResponseEntity<String> rejectFriendRequest(@PathVariable Long id, HttpServletRequest request) {
         String usernameReceiver = jwtUtil.getUsername(request);
         friendRequestService.rejectFriendRequest(id,usernameReceiver);
-        return ResponseEntity.ok("Friend request rejected successfully!");
+        return responseModel.sendResponse("Friend request rejected successfully!");
     }
 
 }

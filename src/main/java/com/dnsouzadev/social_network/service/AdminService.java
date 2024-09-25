@@ -1,5 +1,6 @@
 package com.dnsouzadev.social_network.service;
 
+import com.dnsouzadev.social_network.domain.enums.TypeAccount;
 import com.dnsouzadev.social_network.domain.model.User;
 import com.dnsouzadev.social_network.dto.UserDetailsAdminDto;
 import com.dnsouzadev.social_network.exception.CadastroException;
@@ -30,5 +31,4 @@ public class AdminService {
             throw new CadastroException(e.getMessage());
         }
     }
-
 }

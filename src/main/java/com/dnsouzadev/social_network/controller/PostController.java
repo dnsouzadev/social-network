@@ -23,7 +23,7 @@ public class PostController {
     public ResponseEntity<Void> createPost(HttpServletRequest request, @RequestBody CreatePostDto post) {
         var username = jwtUtil.getUsername(request);
         postService.createPost(username, post);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.created(null).build();
     }
 
     @GetMapping("/{id}")
@@ -36,7 +36,7 @@ public class PostController {
     public ResponseEntity<Void> deletePost(HttpServletRequest request, @PathVariable Long id) {
         var username = jwtUtil.getUsername(request);
         postService.deletePost(username, id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}")

@@ -34,6 +34,10 @@ public class UserService {
         return userRepository.findByUsername(username).orElseThrow();
     }
 
+    public User findById(Long id) {
+        return userRepository.findById(id).orElseThrow();
+    }
+
     public boolean existsByUsernameAndIsHidden(String username) {
         return userRepository.existsByUsernameAndIsHidden(username);
     }
@@ -42,12 +46,13 @@ public class UserService {
         userRepository.save(user);
     }
 
+
     public void signup(UserDetailsDto userDto) {
         try {
             User userExist = findByUsername(userDto.username());
             if (userExist != null) throw new CadastroException("Usuario ja cadastrado");
 
-            User user = createUser(userDto);
+            User user = mapper.createUser(userDto);
             saveUser(user);
         } catch (Exception e) {
             throw new CadastroException(e.getMessage());
@@ -90,10 +95,6 @@ public class UserService {
         } catch (Exception e) {
             throw new RuntimeException();
         }
-    }
-
-    public User createUser(UserDetailsDto userDto) {
-        return new User(userDto.firstName(), userDto.lastName(), userDto.username(), userDto.password());
     }
 
 }

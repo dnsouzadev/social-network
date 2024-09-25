@@ -36,4 +36,8 @@ public class Mapper {
     public Set<CommentDto> toSetCommentDto(Set<Comment> comments) {
         return comments.stream().map(c -> new CommentDto(c.getId(), c.getUser().getFirstName(), c.getUser().getLastName(), c.getUser().getUsername(), c.getContent(), c.getCreatedAt())).collect(Collectors.toSet());
     }
+
+    public User createUser(UserDetailsDto userDto) {
+        return new User(userDto.firstName(), userDto.lastName(), userDto.username(), userDto.password());
+    }
 }

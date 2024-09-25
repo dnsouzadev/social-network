@@ -4,6 +4,7 @@ import com.dnsouzadev.social_network.helper.JwtUtil;
 import com.dnsouzadev.social_network.service.LikeService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,9 +21,10 @@ public class LikeController {
     private JwtUtil jwtUtil;
 
     @GetMapping("/{postId}")
-    public void likePost(HttpServletRequest request, @PathVariable Long postId) {
+    public ResponseEntity<Void> likePost(HttpServletRequest request, @PathVariable Long postId) {
         var username = jwtUtil.getUsername(request);
         likeService.likePost(username, postId);
+        return ResponseEntity.noContent().build();
     }
 
 

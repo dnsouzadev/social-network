@@ -32,7 +32,7 @@ public class AdminController {
     @PostMapping("/signup")
     public ResponseEntity<Void> signup(@RequestBody UserDetailsAdminDto user) {
         adminService.signup(user);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.created(null).build();
     }
 
     @PostMapping("/change/{id}")

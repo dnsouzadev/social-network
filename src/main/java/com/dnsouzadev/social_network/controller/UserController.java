@@ -3,6 +3,7 @@ package com.dnsouzadev.social_network.controller;
 import com.dnsouzadev.social_network.dto.*;
 import com.dnsouzadev.social_network.helper.JwtUtil;
 import com.dnsouzadev.social_network.domain.model.User;
+import com.dnsouzadev.social_network.helper.ResponseModel;
 import com.dnsouzadev.social_network.service.FriendRequestService;
 import com.dnsouzadev.social_network.service.FriendshipService;
 import com.dnsouzadev.social_network.service.PostService;
@@ -29,6 +30,9 @@ public class UserController {
     private JwtUtil jwtUtil;
 
     @Autowired
+    private ResponseModel responseModel;
+
+    @Autowired
     private FriendRequestService friendRequestService;
 
     @Autowired
@@ -37,13 +41,13 @@ public class UserController {
     @PostMapping("/signup")
     public ResponseEntity<Void> signup(@RequestBody @Valid UserDetailsDto user) {
         service.signup(user);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.created(null).build();
     }
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody UserLoginDto user) {
         String jwt = service.login(user);
-        return ResponseEntity.ok(jwt);
+        return responseModel.sendJwtResponse(jwt);
     }
 
     @GetMapping("/profile")
@@ -85,6 +89,6 @@ public class UserController {
     public ResponseEntity<Void> deleteFriendship(@PathVariable String username, HttpServletRequest request) {
         String sender = jwtUtil.getUsername(request);
         friendshipService.deleteFriendship(sender, username);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }

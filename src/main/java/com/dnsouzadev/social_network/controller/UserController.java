@@ -3,7 +3,7 @@ package com.dnsouzadev.social_network.controller;
 import com.dnsouzadev.social_network.dto.*;
 import com.dnsouzadev.social_network.helper.JwtUtil;
 import com.dnsouzadev.social_network.domain.model.User;
-import com.dnsouzadev.social_network.helper.ResponseModel;
+import com.dnsouzadev.social_network.helper.ResponseMessage;
 import com.dnsouzadev.social_network.service.FriendRequestService;
 import com.dnsouzadev.social_network.service.FriendshipService;
 import com.dnsouzadev.social_network.service.PostService;
@@ -30,9 +30,6 @@ public class UserController {
     private JwtUtil jwtUtil;
 
     @Autowired
-    private ResponseModel responseModel;
-
-    @Autowired
     private FriendRequestService friendRequestService;
 
     @Autowired
@@ -45,9 +42,9 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody UserLoginDto user) {
+    public ResponseEntity<ResponseMessage> login(@RequestBody UserLoginDto user) {
         String jwt = service.login(user);
-        return responseModel.sendJwtResponse(jwt);
+        return ResponseEntity.ok(new ResponseMessage(jwt));
     }
 
     @GetMapping("/profile")
